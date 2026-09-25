@@ -1,4 +1,21 @@
-# 🧠 Neurone — une IA faite maison
+# 🧠 IA — des intelligences artificielles faites maison
+
+Ce dépôt contient deux IA construites à partir de zéro, pour comprendre comment elles fonctionnent de l'intérieur :
+
+| Projet | Ce que c'est | Dépendances |
+|--------|--------------|-------------|
+| 🧠 **[Neurone](#-neurone--un-chatbot-fait-maison)** | Un chatbot qui comprend tes questions grâce à un réseau de neurones codé à la main | aucune |
+| 🤖 **[MiniGPT](minigpt/README.md)** | Un petit modèle de langage de type GPT (Transformer) qui écrit du texte en français | PyTorch |
+
+```bash
+python3 -m ia                                        # discuter avec Neurone
+pip install -r requirements.txt
+python3 -m minigpt ecrire "Monsieur le Président, "   # faire écrire MiniGPT
+```
+
+---
+
+# 🧠 Neurone — un chatbot fait maison
 
 **Neurone** est un chatbot en français propulsé par un **réseau de neurones écrit entièrement à la main**, en Python pur :
 pas de TensorFlow, pas de PyTorch, pas même NumPy. Tout le code de l'IA tient dans quelques fichiers qu'on peut lire et comprendre.
