@@ -16,7 +16,7 @@ pas de TensorFlow, pas de PyTorch, pas même NumPy. Tout le code de l'IA tient d
 Il faut seulement Python 3.8 ou plus récent :
 
 ```bash
-git clone https://github.com/crispinoza225/IA.git
+git clone https://github.com/Crispinoza225/IA.git
 cd IA
 python3 -m ia
 ```
