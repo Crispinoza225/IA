@@ -18,6 +18,19 @@ python3 -m minigpt discuter                           # mode interactif
 
 Un modèle déjà entraîné est fourni dans `minigpt/modeles/minigpt.pt`, donc tu peux l'essayer tout de suite.
 
+Exemples de textes écrits par ce modèle (5 000 étapes, ~22 minutes sur un processeur) :
+
+> **Monsieur le Président,** je crois que cette ambition si nous devons constater sur le cas concrètement et aux
+> phoses qui est accord avait présenté publiée par les principes du système de la priorité avec l'OMPI, pour
+> l'environnement, ce livre blanc.
+
+> **Je voudrais** souligner aux infrastructures, Monsieur le Président, j'ai demandé maintenant la Commission et
+> que nous sommageons une proposition politique concernant le programme…
+
+Il a appris **tout seul**, sans aucune règle de grammaire, à écrire des mots français, à accorder
+(souvent !), à placer la ponctuation et à imiter le style des débats parlementaires. Le sens, lui, reste
+approximatif : pour ça il faudrait un modèle bien plus grand et bien plus de texte.
+
 ## 🏋️ L'entraîner toi-même
 
 ```bash
