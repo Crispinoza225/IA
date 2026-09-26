@@ -1,16 +1,18 @@
 # 🧠 IA — des intelligences artificielles faites maison
 
-Ce dépôt contient deux IA construites à partir de zéro, pour comprendre comment elles fonctionnent de l'intérieur :
+Ce dépôt contient des projets construits à partir de zéro, pour comprendre de l'intérieur comment ces technologies fonctionnent :
 
 | Projet | Ce que c'est | Dépendances |
 |--------|--------------|-------------|
 | 🧠 **[Neurone](#-neurone--un-chatbot-fait-maison)** | Un chatbot qui comprend tes questions grâce à un réseau de neurones codé à la main | aucune |
 | 🤖 **[MiniGPT](minigpt/README.md)** | Un petit modèle de langage de type GPT (Transformer) qui écrit du texte en français | PyTorch |
+| 🔎 **[Fouineur](fouineur/README.md)** | Un moteur de recherche : robot d'exploration, index inversé, BM25, PageRank et interface web | aucune |
 
 ```bash
 python3 -m ia                                        # discuter avec Neurone
 pip install -r requirements.txt
 python3 -m minigpt ecrire "Monsieur le Président, "   # faire écrire MiniGPT
+python3 -m fouineur demo                             # moteur de recherche sur http://127.0.0.1:8000/
 ```
 
 ---
