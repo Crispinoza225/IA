@@ -24,8 +24,8 @@ class TestTokeniseur(unittest.TestCase):
         self.assertEqual(tok.decoder(tok.encoder("abz")), "ab�")
 
     def test_nettoyage(self):
-        texte = nettoyer_europarl("le grand \" bogue de l' an 2000 \" ne s' est pas produit .\nmes vux")
-        self.assertEqual(texte, "le grand « bogue de l'an 2000 » ne s'est pas produit.\nmes vœux")
+        texte = nettoyer_europarl("le grand \" bogue de l' an 2000 \" ne s' est pas produit .\nqu ' il\nmes vux")
+        self.assertEqual(texte, "le grand « bogue de l'an 2000 » ne s'est pas produit.\nqu'il\nmes vœux")
 
 
 @unittest.skipIf(torch is None, "PyTorch n'est pas installé")

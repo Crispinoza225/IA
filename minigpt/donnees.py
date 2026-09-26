@@ -20,7 +20,7 @@ def nettoyer_europarl(texte):
         texte = re.sub(rf"\b{faux}(s?)\b", rf"{vrai}\1", texte)
     texte = re.sub(r" ([.,)])", r"\1", texte)
     texte = re.sub(r"([(]) ", r"\1", texte)
-    texte = re.sub(r"(\w') ", r"\1", texte)
+    texte = re.sub(r"(\w) ?' ", r"\1'", texte)
     texte = re.sub(r'" (.*?) "', r"« \1 »", texte)
     lignes = [ligne.strip() for ligne in texte.splitlines()]
     # On retire les lignes vides et les balises du corpus.
