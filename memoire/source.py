@@ -74,6 +74,12 @@ class SautDePage:
     pass
 
 
+@dataclass
+class Reference:
+    """Une entrée de bibliographie, présentée avec un retrait négatif (la 1re ligne dépasse à gauche)."""
+    morceaux: list
+
+
 # --- Texte en ligne : gras et italique ---------------------------------------------------
 
 def lire_morceaux(texte):

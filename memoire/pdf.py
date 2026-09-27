@@ -8,7 +8,7 @@ import io
 import os
 from xml.sax.saxutils import escape
 
-from .source import Citation, Liste, Paragraphe, SautDePage, Tableau, Titre
+from .source import Citation, Liste, Paragraphe, Reference, SautDePage, Tableau, Titre
 
 # Pour chaque police : fichiers possibles (la police elle-même, puis un équivalent libre aux mêmes dimensions).
 FICHIERS = {
@@ -82,8 +82,11 @@ def balisage(morceaux):
     return resultat
 
 
-def ecrire_pdf(blocs, reglages):
-    """Renvoie (contenu du PDF en octets, liste des entrées du sommaire [(niveau, texte, page)])."""
+def ecrire_pdf(blocs, reglages, mention=""):
+    """Renvoie (contenu du PDF en octets, liste des entrées du sommaire [(niveau, texte, page)]).
+
+    mention : une petite ligne grise ajoutée en bas de chaque page (« réalisé avec… »), facultative.
+    """
     from reportlab.lib import colors
     from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY, TA_LEFT, TA_RIGHT
     from reportlab.lib.pagesizes import A4
@@ -112,6 +115,8 @@ def ecrire_pdf(blocs, reglages):
                               leftIndent=cm, rightIndent=cm, firstLineIndent=0, spaceBefore=6, spaceAfter=6)
     element_liste = ParagraphStyle("liste", parent=corps, firstLineIndent=0, leftIndent=1.27 * cm,
                                    bulletIndent=0.63 * cm, spaceAfter=2, bulletFontName=police, bulletFontSize=r.taille)
+    reference = ParagraphStyle("reference", parent=corps, alignment=TA_LEFT, leftIndent=1.25 * cm,
+                               firstLineIndent=-1.25 * cm)
     cellule = ParagraphStyle("cellule", parent=corps, alignment=TA_LEFT, firstLineIndent=0, spaceAfter=0,
                              leading=r.taille * 1.2)
     garde_style = ParagraphStyle("garde", parent=corps, alignment=TA_CENTER, firstLineIndent=0, spaceAfter=0)
@@ -134,6 +139,12 @@ def ecrire_pdf(blocs, reglages):
 
         def numero_de_page(self, canevas, document):
             page = canevas.getPageNumber()
+            if mention:
+                canevas.saveState()
+                canevas.setFont(police, 7)
+                canevas.setFillColor(colors.HexColor("#808080"))
+                canevas.drawCentredString(A4[0] / 2, 0.45 * cm, mention)
+                canevas.restoreState()
             if r.pagination == "aucune" or (page == 1 and r.garde.afficher):
                 return
             canevas.saveState()
@@ -216,6 +227,8 @@ def ecrire_pdf(blocs, reglages):
             histoire.append(Paragraph(balisage(bloc.morceaux), corps))
         elif isinstance(bloc, Citation):
             histoire.append(Paragraph(f"<i>{balisage(bloc.morceaux)}</i>", citation))
+        elif isinstance(bloc, Reference):
+            histoire.append(Paragraph(balisage(bloc.morceaux), reference))
         elif isinstance(bloc, Liste):
             for numero, element in enumerate(bloc.elements, start=1):
                 histoire.append(Paragraph(balisage(element), element_liste,

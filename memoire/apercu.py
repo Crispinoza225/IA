@@ -2,7 +2,7 @@
 
 from html import escape
 
-from .source import Citation, Liste, Paragraphe, SautDePage, Tableau, Titre
+from .source import Citation, Liste, Paragraphe, Reference, SautDePage, Tableau, Titre
 
 FAMILLES_CSS = {
     "Times New Roman": '"Times New Roman", "Liberation Serif", Times, serif',
@@ -37,6 +37,7 @@ def feuille_de_style(r):
 .feuille h2 {{ font-size: {r.tailles_titres[1]}pt; margin: 18pt 0 8pt; }}
 .feuille h3 {{ font-size: {r.tailles_titres[2]}pt; margin: 12pt 0 6pt; font-style: italic; }}
 .feuille > :first-child {{ margin-top: 0; }}
+.feuille p.reference {{ text-align: left; text-indent: -1.25cm; padding-left: 1.25cm; }}
 .feuille blockquote {{ margin: 6pt 1cm; font-style: italic; font-size: {max(8, r.taille - 1)}pt; line-height: 1.2; }}
 .feuille ul, .feuille ol {{ margin: 0 0 {r.espace_apres}pt; padding-left: 1.27cm; }}
 .feuille table {{ border-collapse: collapse; width: 100%; margin: 4pt 0 10pt; line-height: 1.2; }}
@@ -101,6 +102,8 @@ def apercu(blocs, reglages, entrees_sommaire=None):
             courante.append(f"<h{bloc.niveau}>{escape(texte)}</h{bloc.niveau}>")
         elif isinstance(bloc, Paragraphe):
             courante.append(f"<p>{html_morceaux(bloc.morceaux)}</p>")
+        elif isinstance(bloc, Reference):
+            courante.append(f'<p class="reference">{html_morceaux(bloc.morceaux)}</p>')
         elif isinstance(bloc, Citation):
             courante.append(f"<blockquote>{html_morceaux(bloc.morceaux)}</blockquote>")
         elif isinstance(bloc, Liste):

@@ -12,7 +12,7 @@ import io
 import zipfile
 from xml.sax.saxutils import escape
 
-from .source import Citation, Liste, Paragraphe, SautDePage, Tableau, Titre
+from .source import Citation, Liste, Paragraphe, Reference, SautDePage, Tableau, Titre
 
 CM = 567  # un centimètre en « twips » (vingtièmes de point), l'unité de Word
 
@@ -110,6 +110,8 @@ def corps(blocs, reglages, listes_numerotees, saut_avant):
             xml.append(paragraphe(runs(bloc.morceaux), None, debut_de_page()))
         elif isinstance(bloc, Citation):
             xml.append(paragraphe(runs(bloc.morceaux), "Quote", debut_de_page()))
+        elif isinstance(bloc, Reference):
+            xml.append(paragraphe(runs(bloc.morceaux), "Bibliography", debut_de_page()))
         elif isinstance(bloc, Liste):
             if bloc.ordonnee:
                 listes_numerotees.append(len(listes_numerotees) + 3)  # chaque liste recommence à 1
@@ -188,6 +190,8 @@ def styles(reglages):
 <w:style w:type="paragraph" w:styleId="Quote"><w:name w:val="Quote"/><w:basedOn w:val="Normal"/><w:next w:val="Normal"/><w:qFormat/>
 <w:pPr><w:spacing w:before="120" w:after="120" w:line="240" w:lineRule="auto"/><w:ind w:left="{CM}" w:right="{CM}" w:firstLine="0"/></w:pPr>
 <w:rPr><w:i/><w:sz w:val="{max(16, taille - 2)}"/><w:szCs w:val="{max(16, taille - 2)}"/></w:rPr></w:style>
+<w:style w:type="paragraph" w:styleId="Bibliography"><w:name w:val="Bibliography"/><w:basedOn w:val="Normal"/>
+<w:pPr><w:jc w:val="left"/><w:ind w:left="{int(1.25 * CM)}" w:hanging="{int(1.25 * CM)}"/></w:pPr></w:style>
 <w:style w:type="paragraph" w:styleId="ListParagraph"><w:name w:val="List Paragraph"/><w:basedOn w:val="Normal"/><w:qFormat/>
 <w:pPr><w:spacing w:after="60"/><w:ind w:left="720" w:hanging="360"/><w:contextualSpacing/></w:pPr></w:style>
 <w:style w:type="paragraph" w:styleId="PageDeGarde"><w:name w:val="Page de garde"/><w:basedOn w:val="Normal"/>
@@ -232,16 +236,24 @@ def numerotation(reglages, listes_numerotees):
 </w:numbering>'''
 
 
-def pied_de_page(reglages):
+def pied_de_page(reglages, mention=""):
     alignement = "right" if reglages.pagination == "droite" else "center"
-    return f'''<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<w:ftr {ESPACES}><w:p><w:pPr><w:pStyle w:val="Footer"/><w:jc w:val="{alignement}"/></w:pPr>
-<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>
-<w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r></w:p></w:ftr>'''
+    numero = ('<w:r><w:fldChar w:fldCharType="begin"/></w:r><w:r><w:instrText xml:space="preserve"> PAGE </w:instrText></w:r>'
+              '<w:r><w:fldChar w:fldCharType="separate"/></w:r><w:r><w:t>1</w:t></w:r><w:r><w:fldChar w:fldCharType="end"/></w:r>')
+    xml = ""
+    if reglages.pagination != "aucune":
+        xml += f'<w:p><w:pPr><w:pStyle w:val="Footer"/><w:jc w:val="{alignement}"/></w:pPr>{numero}</w:p>'
+    if mention:
+        xml += ('<w:p><w:pPr><w:pStyle w:val="Footer"/><w:jc w:val="center"/></w:pPr><w:r><w:rPr>'
+                f'<w:color w:val="808080"/><w:sz w:val="16"/></w:rPr><w:t xml:space="preserve">{escape(mention)}</w:t></w:r></w:p>')
+    return f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n<w:ftr {ESPACES}>{xml}</w:ftr>'
 
 
-def ecrire_docx(blocs, reglages):
-    """Renvoie le contenu du fichier .docx (en octets)."""
+def ecrire_docx(blocs, reglages, mention=""):
+    """Renvoie le contenu du fichier .docx (en octets).
+
+    mention : une petite ligne grise ajoutée en bas de chaque page (« réalisé avec… »), facultative.
+    """
     r = reglages
     listes_numerotees = []
     contenu = ""
@@ -250,7 +262,7 @@ def ecrire_docx(blocs, reglages):
     if r.sommaire:
         contenu += sommaire(blocs, r, saut_avant=r.garde.afficher)
     contenu += corps(blocs, r, listes_numerotees, saut_avant=r.garde.afficher or r.sommaire)
-    avec_pied = r.pagination != "aucune"
+    avec_pied = r.pagination != "aucune" or bool(mention)
     reference_pied = '<w:footerReference w:type="default" r:id="rIdPied"/>' if avec_pied else ""
     section = (f'<w:sectPr>{reference_pied}<w:pgSz w:w="11906" w:h="16838"/>'
                f'<w:pgMar w:top="{int(r.marge_haut * CM)}" w:right="{int(r.marge_droite * CM)}" '
@@ -307,6 +319,6 @@ def ecrire_docx(blocs, reglages):
         archive.writestr("word/settings.xml", reglages_word)
         archive.writestr("word/_rels/document.xml.rels", relations_document)
         if avec_pied:
-            archive.writestr("word/footer1.xml", pied_de_page(r))
+            archive.writestr("word/footer1.xml", pied_de_page(r, mention))
     return tampon.getvalue()
 

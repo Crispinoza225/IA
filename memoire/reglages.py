@@ -1,5 +1,6 @@
 """Les réglages de mise en forme d'un mémoire, et les normes prêtes à l'emploi."""
 
+import re
 from dataclasses import asdict, dataclass, field, fields
 
 POLICES = ["Times New Roman", "Arial", "Calibri", "Garamond", "Georgia", "Cambria"]
@@ -100,7 +101,7 @@ class Reglages:
             self.numerotation = "decimale"
         if self.pagination not in POSITIONS_PAGINATION:
             self.pagination = "centre"
-        if not (len(self.couleur_titres) == 7 and self.couleur_titres.startswith("#")):
+        if not re.fullmatch(r"#[0-9A-Fa-f]{6}", self.couleur_titres):
             self.couleur_titres = "#000000"
         return self
 

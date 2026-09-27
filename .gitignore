@@ -3,3 +3,4 @@ __pycache__/
 ia/appris.json
 minigpt/donnees/*.txt
 fouineur/donnees/
+redigo/donnees/

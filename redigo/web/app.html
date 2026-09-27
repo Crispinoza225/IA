@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rédigo</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ============ Connexion / inscription ============ -->
+<section id="vue-auth" class="vue auth" hidden>
+  <div class="carte-auth">
+    <a class="marque" href="/"><span class="logo">R</span><b>Rédigo</b></a>
+    <nav class="onglets-auth" role="tablist">
+      <button role="tab" data-auth="connexion" aria-selected="true">Connexion</button>
+      <button role="tab" data-auth="inscription" aria-selected="false">Créer un compte</button>
+    </nav>
+    <form id="form-connexion" data-formulaire="connexion">
+      <label>E-mail <input type="email" name="email" autocomplete="email" required></label>
+      <label>Mot de passe <input type="password" name="mot_de_passe" autocomplete="current-password" required></label>
+      <button class="principal" type="submit">Se connecter</button>
+      <button type="button" class="lien" data-aller="oubli">Mot de passe oublié ?</button>
+    </form>
+    <form id="form-inscription" data-formulaire="inscription" hidden>
+      <label>Prénom et nom <input type="text" name="nom" autocomplete="name" maxlength="100" placeholder="Il apparaîtra sur la page de garde"></label>
+      <label>E-mail <input type="email" name="email" autocomplete="email" required></label>
+      <label>Mot de passe <input type="password" name="mot_de_passe" autocomplete="new-password" minlength="8" required placeholder="8 caractères au moins"></label>
+      <button class="principal" type="submit">Créer mon compte gratuit</button>
+      <p class="petit">Avec l'adresse e-mail de ton université, tu profites de sa licence si elle en a une.</p>
+    </form>
+    <form id="form-oubli" data-formulaire="oubli" hidden>
+      <p>Indique ton e-mail : nous t'envoyons un lien pour choisir un nouveau mot de passe.</p>
+      <label>E-mail <input type="email" name="email" autocomplete="email" required></label>
+      <button class="principal" type="submit">Envoyer le lien</button>
+      <button type="button" class="lien" data-aller="connexion">Retour à la connexion</button>
+    </form>
+    <form id="form-reinitialiser" data-formulaire="reinitialiser" hidden>
+      <p>Choisis ton nouveau mot de passe.</p>
+      <label>Nouveau mot de passe <input type="password" name="mot_de_passe" autocomplete="new-password" minlength="8" required></label>
+      <button class="principal" type="submit">Enregistrer</button>
+    </form>
+    <p id="message-auth" class="message" role="status"></p>
+  </div>
+</section>
+
+<!-- ============ Tableau de bord ============ -->
+<section id="vue-tableau" class="vue" hidden>
+  <header class="barre">
+    <a class="marque" href="/app#projets"><span class="logo">R</span><b>Rédigo</b></a>
+    <div class="droite">
+      <button class="badge-formule" data-ouvrir="dialogue-formule"></button>
+      <button data-ouvrir="dialogue-compte" class="compte" aria-label="Mon compte"></button>
+    </div>
+  </header>
+  <div class="tableau">
+    <div class="titre-tableau">
+      <h1>Mes mémoires</h1>
+      <button class="principal" id="nouveau-projet">+ Nouveau mémoire</button>
+    </div>
+    <div id="bandeau-paiement" class="bandeau" hidden></div>
+    <div id="liste-projets" class="liste-projets"></div>
+  </div>
+</section>
+
+<!-- ============ Éditeur ============ -->
+<section id="vue-editeur" class="vue editeur" hidden>
+  <header class="barre">
+    <a class="retour" href="/app#projets" aria-label="Retour à mes mémoires">←</a>
+    <input id="titre-projet" class="titre-projet" maxlength="200" aria-label="Titre du mémoire">
+    <span id="etat" class="etat" role="status"></span>
+    <div class="droite">
+      <button data-ouvrir="dialogue-partage">Partager</button>
+      <button id="export-docx" class="principal">Word</button>
+      <button id="export-pdf" class="principal secondaire">PDF</button>
+    </div>
+  </header>
+  <div id="bandeau-gratuit" class="bandeau fin" hidden>
+    Version gratuite : une petite mention « Rédigo » apparaît en bas des pages exportées.
+    <button class="lien" data-ouvrir="dialogue-formule">L'enlever avec le Pass Mémoire</button>
+  </div>
+  <main class="espace">
+    <section class="panneau">
+      <nav class="onglets" role="tablist" data-groupe="gauche">
+        <button role="tab" data-onglet="texte" aria-selected="true">Texte</button>
+        <button role="tab" data-onglet="forme" aria-selected="false">Mise en forme</button>
+        <button role="tab" data-onglet="garde" aria-selected="false">Page de garde</button>
+        <button role="tab" data-onglet="biblio" aria-selected="false">Bibliographie</button>
+      </nav>
+
+      <div class="onglet" id="onglet-texte">
+        <div class="outils" role="toolbar" aria-label="Mise en forme du texte">
+          <button data-action="titre1" title="Titre de chapitre (#)">Titre 1</button>
+          <button data-action="titre2" title="Sous-partie (##)">Titre 2</button>
+          <button data-action="titre3" title="Sous-sous-partie (###)">Titre 3</button>
+          <span class="separateur"></span>
+          <button data-action="gras" title="Gras (Ctrl+B)"><b>G</b></button>
+          <button data-action="italique" title="Italique (Ctrl+I)"><i>I</i></button>
+          <span class="separateur"></span>
+          <button data-action="puces" title="Liste à puces">• Liste</button>
+          <button data-action="numeros" title="Liste numérotée">1. Liste</button>
+          <button data-action="citation" title="Citation longue">« Citation »</button>
+          <button data-action="tableau" title="Insérer un tableau">Tableau</button>
+          <button data-action="saut" title="Saut de page">Saut de page</button>
+          <button data-action="citer" title="Citer une source de la bibliographie">Citer…</button>
+          <label class="bouton" title="Récupérer le texte d'un document Word">Importer un Word<input type="file" id="importer-docx" accept=".docx" hidden></label>
+        </div>
+        <textarea id="texte" spellcheck="true" lang="fr" aria-label="Texte du mémoire"
+                  placeholder="# Introduction&#10;&#10;Écris ou colle ton texte ici…"></textarea>
+        <div class="infos"><span id="infos"></span><span id="alerte-citations" class="alerte"></span></div>
+        <details class="aide">
+          <summary>Comment écrire ?</summary>
+          <table>
+            <tr><td><code># Titre</code></td><td>titre de chapitre (niveau 1)</td></tr>
+            <tr><td><code>## Titre</code> / <code>### Titre</code></td><td>sous-partie / sous-sous-partie</td></tr>
+            <tr><td><code>**gras**</code> / <code>*italique*</code></td><td><b>gras</b> / <i>italique</i></td></tr>
+            <tr><td><code>- élément</code> / <code>1. élément</code></td><td>liste à puces / numérotée</td></tr>
+            <tr><td><code>&gt; texte</code></td><td>citation longue (en retrait)</td></tr>
+            <tr><td><code>| A | B |</code> puis <code>|---|---|</code></td><td>tableau</td></tr>
+            <tr><td><code>---saut de page---</code></td><td>saut de page</td></tr>
+            <tr><td><code># Avant-propos {-}</code></td><td>titre sans numéro</td></tr>
+            <tr><td><code>[@dupont2020, p. 12]</code></td><td>citation : (Dupont, 2020, p. 12)</td></tr>
+            <tr><td><code>@dupont2020</code></td><td>citation dans la phrase : Dupont (2020)</td></tr>
+            <tr><td><code>[bibliographie]</code></td><td>place la liste des références à cet endroit</td></tr>
+          </table>
+        </details>
+      </div>
+
+      <div class="onglet" id="onglet-forme" hidden>
+        <div class="ligne-modele">
+          <label>Appliquer un modèle <select id="choix-modele"></select></label>
+          <button id="enregistrer-modele" title="Réutiliser ces réglages pour tes prochains mémoires">Enregistrer comme modèle</button>
+        </div>
+        <fieldset>
+          <legend>Texte</legend>
+          <label>Police <select data-cle="police" id="choix-police"></select></label>
+          <label>Taille (pt) <input type="number" data-cle="taille" min="8" max="20" step="0.5"></label>
+          <label>Interligne
+            <select data-cle="interligne">
+              <option value="1">Simple (1)</option><option value="1.15">1,15</option>
+              <option value="1.5">1,5 ligne</option><option value="2">Double (2)</option>
+            </select>
+          </label>
+          <label>Alignement <select data-cle="alignement" id="choix-alignement"></select></label>
+          <label>Retrait de 1ʳᵉ ligne (cm) <input type="number" data-cle="retrait" min="0" max="5" step="0.05"></label>
+          <label>Espace après un paragraphe (pt) <input type="number" data-cle="espace_apres" min="0" max="36" step="1"></label>
+        </fieldset>
+        <fieldset>
+          <legend>Marges (cm)</legend>
+          <div class="grille4">
+            <label>Haut <input type="number" data-cle="marge_haut" min="0.5" max="6" step="0.1"></label>
+            <label>Bas <input type="number" data-cle="marge_bas" min="0.5" max="6" step="0.1"></label>
+            <label>Gauche <input type="number" data-cle="marge_gauche" min="0.5" max="6" step="0.1"></label>
+            <label>Droite <input type="number" data-cle="marge_droite" min="0.5" max="6" step="0.1"></label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Titres et numérotation</legend>
+          <label>Numérotation <select data-cle="numerotation" id="choix-numerotation"></select></label>
+          <label>Mot avant le numéro de chapitre <input type="text" data-cle="prefixe_chapitre" placeholder="ex. : Chapitre" maxlength="30"></label>
+          <div class="grille3">
+            <label>Titre 1 (pt) <input type="number" data-cle="tailles_titres" data-index="0" min="8" max="36"></label>
+            <label>Titre 2 (pt) <input type="number" data-cle="tailles_titres" data-index="1" min="8" max="36"></label>
+            <label>Titre 3 (pt) <input type="number" data-cle="tailles_titres" data-index="2" min="8" max="36"></label>
+          </div>
+          <label>Couleur des titres <input type="color" data-cle="couleur_titres"></label>
+          <label class="case"><input type="checkbox" data-cle="chapitre_nouvelle_page"> Chaque chapitre commence sur une nouvelle page</label>
+        </fieldset>
+        <fieldset>
+          <legend>Sommaire et pages</legend>
+          <label class="case"><input type="checkbox" data-cle="sommaire"> Sommaire automatique</label>
+          <label>Titre du sommaire <input type="text" data-cle="titre_sommaire" maxlength="60"></label>
+          <label>Niveaux dans le sommaire
+            <select data-cle="profondeur_sommaire"><option value="1">1 (chapitres)</option><option value="2">2</option><option value="3">3 (tous les titres)</option></select>
+          </label>
+          <label>Numéros de page <select data-cle="pagination" id="choix-pagination"></select></label>
+        </fieldset>
+      </div>
+
+      <div class="onglet" id="onglet-garde" hidden>
+        <label class="case"><input type="checkbox" data-garde="afficher"> Ajouter une page de garde</label>
+        <fieldset>
+          <legend>Informations</legend>
+          <label>Université <input type="text" data-garde="universite" placeholder="Université de …"></label>
+          <label>Faculté, UFR ou école <input type="text" data-garde="faculte"></label>
+          <label>Type de document <input type="text" data-garde="type_document" placeholder="Mémoire de Master 2"></label>
+          <label>Titre du mémoire <textarea data-garde="titre" rows="2"></textarea></label>
+          <label>Sous-titre <input type="text" data-garde="sous_titre"></label>
+          <label>Auteur <input type="text" data-garde="auteur" placeholder="Prénom Nom"></label>
+          <label>Directeur ou directrice <input type="text" data-garde="directeur"></label>
+          <label>Année <input type="text" data-garde="annee" placeholder="Année universitaire 2025-2026"></label>
+        </fieldset>
+      </div>
+
+      <div class="onglet" id="onglet-biblio" hidden>
+        <div class="ligne-biblio">
+          <label>Norme <select id="style-biblio"></select></label>
+          <label class="case"><input type="checkbox" id="biblio-toutes"> Lister aussi les sources non citées</label>
+        </div>
+        <div class="outils">
+          <button class="principal" id="ajouter-reference">+ Ajouter une source</button>
+          <label class="bouton" title="Exporté depuis Zotero, Mendeley, Google Scholar…">Importer un fichier BibTeX<input type="file" id="importer-bibtex" accept=".bib,.bibtex,.txt" hidden></label>
+        </div>
+        <input type="search" id="filtre-references" placeholder="Rechercher une source…" aria-label="Rechercher une source">
+        <p class="petit">Pour citer une source, place le curseur dans le texte puis clique sur « Citer » à côté de la source.</p>
+        <ul id="liste-references" class="liste-references"></ul>
+      </div>
+    </section>
+
+    <section class="droite-editeur">
+      <nav class="onglets" role="tablist" data-groupe="droite">
+        <button role="tab" data-onglet="apercu" aria-selected="true">Aperçu</button>
+        <button role="tab" data-onglet="commentaires" aria-selected="false">Commentaires <span id="compteur-commentaires" class="pastille" hidden></span></button>
+        <button role="tab" data-onglet="versions" aria-selected="false">Versions</button>
+      </nav>
+      <div class="onglet apercu" id="onglet-apercu">
+        <div class="commandes-apercu">
+          <span class="zoom">
+            <button id="zoom-moins" aria-label="Réduire">−</button>
+            <span id="zoom-valeur">60 %</span>
+            <button id="zoom-plus" aria-label="Agrandir">+</button>
+          </span>
+        </div>
+        <div id="pages"></div>
+        <p class="note">L'aperçu montre la mise en forme de chaque partie. Le découpage exact en pages est celui des fichiers Word et PDF.</p>
+      </div>
+      <div class="onglet" id="onglet-commentaires" hidden>
+        <p class="petit">Les commentaires de ton directeur ou ta directrice arrivent ici. Clique sur un extrait pour le retrouver dans ton texte.</p>
+        <label class="case"><input type="checkbox" id="voir-resolus"> Afficher les commentaires résolus</label>
+        <div id="liste-commentaires"></div>
+      </div>
+      <div class="onglet" id="onglet-versions" hidden>
+        <form id="form-version" class="ligne">
+          <input type="text" name="libelle" maxlength="100" placeholder="Nom de la version (ex. : envoyée au directeur)" aria-label="Nom de la version">
+          <button class="principal" type="submit">Enregistrer une version</button>
+        </form>
+        <p class="petit">Une version est aussi gardée automatiquement pendant que tu écris.</p>
+        <ul id="liste-versions" class="liste-versions"></ul>
+      </div>
+    </section>
+  </main>
+</section>
+
+<!-- ============ Dialogues ============ -->
+<dialog id="dialogue-nouveau">
+  <form method="dialog" id="form-nouveau">
+    <h2>Nouveau mémoire</h2>
+    <label>Titre <input type="text" name="titre" maxlength="200" required placeholder="Le titre de ton mémoire"></label>
+    <label>Mise en forme <select name="modele" id="modele-nouveau"></select></label>
+    <label class="case"><input type="checkbox" name="exemple"> Commencer avec un mémoire d'exemple (pour découvrir)</label>
+    <div class="boutons">
+      <button value="annuler" formnovalidate>Annuler</button>
+      <button class="principal" value="creer">Créer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-reference">
+  <form method="dialog" id="form-reference">
+    <h2 id="titre-reference">Source</h2>
+    <div class="grille2">
+      <label>Type <select name="type" id="type-reference"></select></label>
+      <label>Clé de citation <input type="text" name="cle" maxlength="60" pattern="[\w:\-]+" placeholder="automatique, ex. dupont2020"></label>
+    </div>
+    <label>Auteurs <input type="text" name="auteurs" placeholder="Dupont, Jean ; Martin, Paul — ou une organisation"></label>
+    <div class="grille2">
+      <label>Année <input type="text" name="annee" maxlength="10"></label>
+      <label data-types="livre chapitre">Édition <input type="text" name="edition" placeholder="ex. 2"></label>
+    </div>
+    <label>Titre <input type="text" name="titre" required></label>
+    <label data-types="article">Revue <input type="text" name="revue"></label>
+    <label data-types="chapitre">Titre de l'ouvrage <input type="text" name="ouvrage"></label>
+    <label data-types="chapitre">Directeurs de l'ouvrage <input type="text" name="directeurs" placeholder="Martin, Paul"></label>
+    <div class="grille3" data-types="article rapport chapitre">
+      <label data-types="article">Volume <input type="text" name="volume"></label>
+      <label data-types="article rapport">Numéro <input type="text" name="numero"></label>
+      <label data-types="article chapitre">Pages <input type="text" name="pages" placeholder="45-67"></label>
+    </div>
+    <label data-types="these">Université <input type="text" name="universite"></label>
+    <div class="grille2" data-types="livre chapitre rapport site these">
+      <label>Éditeur <input type="text" name="editeur"></label>
+      <label>Lieu d'édition <input type="text" name="lieu"></label>
+    </div>
+    <div class="grille2">
+      <label>DOI <input type="text" name="doi" placeholder="10.xxxx/…"></label>
+      <label>Adresse web <input type="url" name="url"></label>
+    </div>
+    <label data-types="site rapport article">Consulté le <input type="date" name="consulte"></label>
+    <p id="message-reference" class="message"></p>
+    <div class="boutons">
+      <button value="annuler" formnovalidate>Annuler</button>
+      <button class="principal" value="enregistrer">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-partage">
+  <form method="dialog">
+    <h2>Partager avec ta direction de mémoire</h2>
+    <p>La personne qui reçoit le lien lit la dernière version de ton mémoire et peut laisser des commentaires,
+      sans créer de compte. Elle ne peut pas modifier ton texte.</p>
+    <div class="ligne">
+      <input type="text" id="nom-partage" maxlength="100" placeholder="Pour qui ? (ex. : Mme Bernard)" aria-label="Destinataire">
+      <button class="principal" type="button" id="creer-partage">Créer un lien</button>
+    </div>
+    <ul id="liste-partages" class="liste-partages"></ul>
+    <div class="boutons"><button value="fermer">Fermer</button></div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-formule">
+  <form method="dialog">
+    <h2>Ta formule</h2>
+    <p id="formule-actuelle"></p>
+    <div class="offre" id="offre-pass">
+      <h3>Pass Mémoire — <span id="prix-pass"></span></h3>
+      <p class="petit">Un seul paiement pour 12 mois, sans renouvellement automatique.</p>
+      <ul>
+        <li>Jusqu'à 20 mémoires et rapports</li>
+        <li>Exports Word et PDF sans aucune mention</li>
+        <li>Historique complet des versions</li>
+      </ul>
+      <button class="principal" type="button" id="payer">Obtenir le Pass</button>
+      <p id="note-paiement" class="petit"></p>
+    </div>
+    <p id="message-formule" class="message"></p>
+    <div class="boutons"><button value="fermer">Fermer</button></div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-compte">
+  <form method="dialog">
+    <h2>Mon compte</h2>
+    <p id="compte-email"></p>
+    <details>
+      <summary>Changer mon mot de passe</summary>
+      <div class="pile">
+        <input type="password" id="mdp-actuel" placeholder="Mot de passe actuel" autocomplete="current-password" aria-label="Mot de passe actuel">
+        <input type="password" id="mdp-nouveau" placeholder="Nouveau mot de passe" autocomplete="new-password" aria-label="Nouveau mot de passe">
+        <button type="button" id="changer-mdp">Changer</button>
+      </div>
+    </details>
+    <details>
+      <summary>Mes données</summary>
+      <div class="pile">
+        <button type="button" id="exporter-donnees">Télécharger toutes mes données (.json)</button>
+        <input type="password" id="mdp-suppression" placeholder="Mot de passe, pour confirmer" autocomplete="current-password" aria-label="Mot de passe pour supprimer le compte">
+        <button type="button" id="supprimer-compte" class="danger">Supprimer mon compte et mes mémoires</button>
+      </div>
+    </details>
+    <p id="message-compte" class="message"></p>
+    <div class="boutons">
+      <button type="button" id="deconnexion">Se déconnecter</button>
+      <button value="fermer">Fermer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-version">
+  <form method="dialog">
+    <h2 id="titre-version">Version</h2>
+    <pre id="texte-version" class="texte-version"></pre>
+    <div class="boutons">
+      <button value="fermer">Fermer</button>
+      <button class="principal" type="button" id="restaurer-version">Revenir à cette version</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-citer">
+  <form method="dialog">
+    <h2>Citer une source</h2>
+    <input type="search" id="filtre-citer" placeholder="Rechercher…" aria-label="Rechercher une source">
+    <ul id="liste-citer" class="liste-references compacte"></ul>
+    <label>Page ou précision (facultatif) <input type="text" id="precision-citer" placeholder="p. 12"></label>
+    <div class="boutons"><button value="fermer">Fermer</button></div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/static/commun.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
