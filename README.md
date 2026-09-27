@@ -10,6 +10,7 @@ Ce dépôt contient des projets construits à partir de zéro, pour comprendre d
 | ✨ **[Lumière](lumiere/README.md)** | Un moteur de rendu photoréaliste (path tracing) : verre, métal, ombres douces, flou de profondeur | NumPy |
 | 🕸️ **[Toile](toile/README.md)** | Un navigateur web : HTTP, analyse du HTML, moteur CSS, mise en page et fenêtre | Tkinter |
 | 🌌 **[Galaxie](galaxie/README.md)** | Un simulateur de galaxies : gravité de Barnes-Hut, collisions, bras spiraux | NumPy, Pillow |
+| § **[Mémoire](memoire/README.md)** | Une plateforme de mise en forme de mémoire : styles, numérotation, sommaire, export Word et PDF | reportlab (PDF) |
 
 ```bash
 python3 -m ia                                        # discuter avec Neurone
@@ -19,6 +20,7 @@ python3 -m fouineur demo                             # moteur de recherche sur h
 python3 -m lumiere rendre cornell                    # image photoréaliste dans lumiere/rendus/
 python3 -m toile about:demo                          # ouvrir le navigateur
 python3 -m galaxie collision                         # animation de deux galaxies qui se croisent
+python3 -m memoire                                   # plateforme de mise en forme de mémoire
 ```
 
 ---
