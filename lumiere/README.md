@@ -30,8 +30,8 @@ python3 -m lumiere rendre billes --largeur 1280 --echantillons 256
 | `--rebonds 20` | nombre maximal de rebonds par rayon |
 | `--sortie mon_image.png` | nom du fichier produit |
 
-Durées sur un processeur à 4 cœurs : `nuit` 800×450 en 256 rayons par pixel prend environ 2 minutes, `billes`
-800×450 en 128 rayons environ 6 minutes, `cornell` 600×600 en 256 rayons environ 10 minutes.
+Durées mesurées sur un processeur à 4 cœurs, pour les images ci-dessus : `nuit` (800×450, 256 rayons par pixel)
+environ 1 min 40 s, `billes` (800×450, 128 rayons) environ 4 min, `cornell` (600×600, 256 rayons) environ 8 min.
 
 ## ✨ Ce qu'il sait faire
 
