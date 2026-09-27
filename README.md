@@ -8,6 +8,7 @@ Ce dépôt contient des projets construits à partir de zéro, pour comprendre d
 | 🤖 **[MiniGPT](minigpt/README.md)** | Un petit modèle de langage de type GPT (Transformer) qui écrit du texte en français | PyTorch |
 | 🔎 **[Fouineur](fouineur/README.md)** | Un moteur de recherche : robot d'exploration, index inversé, BM25, PageRank et interface web | aucune |
 | ✨ **[Lumière](lumiere/README.md)** | Un moteur de rendu photoréaliste (path tracing) : verre, métal, ombres douces, flou de profondeur | NumPy |
+| 🕸️ **[Toile](toile/README.md)** | Un navigateur web : HTTP, analyse du HTML, moteur CSS, mise en page et fenêtre | Tkinter |
 
 ```bash
 python3 -m ia                                        # discuter avec Neurone
@@ -15,6 +16,7 @@ pip install -r requirements.txt
 python3 -m minigpt ecrire "Monsieur le Président, "   # faire écrire MiniGPT
 python3 -m fouineur demo                             # moteur de recherche sur http://127.0.0.1:8000/
 python3 -m lumiere rendre cornell                    # image photoréaliste dans lumiere/rendus/
+python3 -m toile about:demo                          # ouvrir le navigateur
 ```
 
 ---
