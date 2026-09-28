@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Mémoire partagé — Rédigo</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<section class="vue editeur">
+  <header class="barre">
+    <a class="marque" href="/"><span class="logo">R</span><b>Rédigo</b></a>
+    <div>
+      <b id="titre"></b>
+      <div class="petit" id="sous-titre"></div>
+    </div>
+    <div class="droite">
+      <button id="telecharger-pdf" class="principal secondaire">Télécharger en PDF</button>
+    </div>
+  </header>
+  <main class="espace partage">
+    <section class="droite-editeur">
+      <div class="onglet apercu">
+        <div class="commandes-apercu">
+          <span class="petit" id="aide-selection">Sélectionne un passage pour le commenter.</span>
+          <span class="zoom">
+            <button id="zoom-moins" aria-label="Réduire">−</button>
+            <span id="zoom-valeur">70 %</span>
+            <button id="zoom-plus" aria-label="Agrandir">+</button>
+          </span>
+        </div>
+        <div id="pages"></div>
+      </div>
+    </section>
+    <section class="panneau">
+      <div class="onglet">
+        <h2>Commentaires</h2>
+        <form id="form-commentaire" class="pile">
+          <label>Ton nom <input type="text" name="auteur" id="auteur" maxlength="100" required></label>
+          <div id="extrait-choisi" class="fil" hidden>
+            <span class="petit">Passage commenté :</span>
+            <span class="extrait" id="extrait-texte"></span>
+            <button type="button" class="lien" id="retirer-extrait">Commenter tout le document</button>
+          </div>
+          <label>Commentaire <textarea name="texte" id="commentaire" rows="4" maxlength="5000" required
+            placeholder="Ex. : cette partie mérite une source, ou reformule la problématique…"></textarea></label>
+          <button class="principal" type="submit">Envoyer le commentaire</button>
+        </form>
+        <div id="liste-commentaires"></div>
+      </div>
+    </section>
+  </main>
+</section>
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/static/commun.js"></script>
+<script src="/static/partage.js"></script>
+</body>
+</html>

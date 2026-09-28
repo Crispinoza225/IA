@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Comment fonctionne un navigateur ?</title>
+<style>
+  body { font-family: sans-serif; max-width: 700px; margin: 0 auto; padding: 16px 24px; color: #222; line-height: 1.45; }
+  h1 { color: #0f766e; }
+  h2 { color: #115e59; border-bottom: 1px solid #99f6e4; }
+  .etape { background: #f0fdfa; border: 1px solid #99f6e4; padding: 2px 16px; margin: 12px 0; }
+</style>
+</head>
+<body>
+<p><a href="about:accueil">← Accueil</a></p>
+<h1>Comment fonctionne un navigateur ?</h1>
+<p>Quand tu tapes une adresse, ton navigateur enchaîne cinq étapes. Toile fait exactement la même chose,
+en beaucoup plus simple.</p>
+
+<div class="etape">
+<h2>1. Le réseau</h2>
+<p>Le navigateur ouvre une connexion avec le serveur (chiffrée avec TLS pour <code>https</code>) et lui envoie une
+requête HTTP : <code>GET /page HTTP/1.1</code>. Le serveur répond avec un code (200 = tout va bien, 404 = introuvable),
+des en-têtes, puis le HTML.</p>
+</div>
+
+<div class="etape">
+<h2>2. L'arbre HTML</h2>
+<p>Le texte HTML est découpé en balises, puis rangé dans un arbre : le <b>DOM</b>. Chaque balise a des enfants.
+Les erreurs courantes (balises oubliées) sont corrigées au passage.</p>
+</div>
+
+<div class="etape">
+<h2>3. Les styles</h2>
+<p>Chaque règle CSS est comparée à chaque élément. Quand plusieurs règles se contredisent, la plus
+<i>spécifique</i> gagne. Certaines propriétés, comme la couleur, passent des parents aux enfants.</p>
+</div>
+
+<div class="etape">
+<h2>4. La mise en page</h2>
+<p>On calcule la position et la taille de chaque boîte : les blocs s'empilent, les mots se rangent en lignes.</p>
+</div>
+
+<div class="etape">
+<h2>5. Le dessin</h2>
+<p>Enfin, on peint les fonds, les bordures et le texte, de l'arrière vers l'avant.</p>
+</div>
+</body>
+</html>

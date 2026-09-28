@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mise en forme de mémoire</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="barre">
+  <div class="marque"><span class="logo">§</span><div><b>Mémoire</b><small>mise en forme automatique</small></div></div>
+  <div class="projet">
+    <button id="nouveau" title="Commencer un document vide">Nouveau</button>
+    <label class="bouton" title="Ouvrir un projet enregistré (.json)">Ouvrir<input type="file" id="ouvrir" accept=".json,application/json" hidden></label>
+    <button id="enregistrer" title="Télécharger le projet (.json) pour le rouvrir plus tard">Enregistrer</button>
+    <label class="bouton" title="Récupérer le texte d'un document Word existant">Importer un Word<input type="file" id="importer" accept=".docx" hidden></label>
+    <button id="exemple" title="Charger un mémoire d'exemple">Exemple</button>
+  </div>
+  <div class="exports">
+    <span id="etat" role="status"></span>
+    <button id="export-docx" class="principal">Télécharger en Word</button>
+    <button id="export-pdf" class="principal secondaire">PDF</button>
+  </div>
+</header>
+
+<main>
+  <section class="panneau">
+    <nav class="onglets" role="tablist">
+      <button role="tab" data-onglet="texte" aria-selected="true">Texte</button>
+      <button role="tab" data-onglet="forme" aria-selected="false">Mise en forme</button>
+      <button role="tab" data-onglet="garde" aria-selected="false">Page de garde</button>
+    </nav>
+
+    <div class="onglet" id="onglet-texte">
+      <div class="outils" role="toolbar" aria-label="Mise en forme du texte">
+        <button data-action="titre1" title="Titre de chapitre (#)">Titre 1</button>
+        <button data-action="titre2" title="Sous-partie (##)">Titre 2</button>
+        <button data-action="titre3" title="Sous-sous-partie (###)">Titre 3</button>
+        <span class="separateur"></span>
+        <button data-action="gras" title="Gras (Ctrl+B)"><b>G</b></button>
+        <button data-action="italique" title="Italique (Ctrl+I)"><i>I</i></button>
+        <span class="separateur"></span>
+        <button data-action="puces" title="Liste à puces">• Liste</button>
+        <button data-action="numeros" title="Liste numérotée">1. Liste</button>
+        <button data-action="citation" title="Citation longue">« Citation »</button>
+        <button data-action="tableau" title="Insérer un tableau">Tableau</button>
+        <button data-action="saut" title="Saut de page">Saut de page</button>
+      </div>
+      <textarea id="texte" spellcheck="true" lang="fr" aria-label="Texte du mémoire"
+                placeholder="# Introduction&#10;&#10;Écris ou colle ton texte ici…"></textarea>
+      <div class="infos"><span id="infos"></span></div>
+      <details class="aide">
+        <summary>Comment écrire ?</summary>
+        <table>
+          <tr><td><code># Titre</code></td><td>titre de chapitre (niveau 1)</td></tr>
+          <tr><td><code>## Titre</code> / <code>### Titre</code></td><td>sous-partie / sous-sous-partie</td></tr>
+          <tr><td><code>**gras**</code> / <code>*italique*</code></td><td><b>gras</b> / <i>italique</i></td></tr>
+          <tr><td><code>- élément</code> / <code>1. élément</code></td><td>liste à puces / numérotée</td></tr>
+          <tr><td><code>&gt; texte</code></td><td>citation longue (en retrait)</td></tr>
+          <tr><td><code>| A | B |</code> puis <code>|---|---|</code></td><td>tableau (la 1ʳᵉ ligne est l'en-tête)</td></tr>
+          <tr><td><code>---saut de page---</code></td><td>saut de page</td></tr>
+          <tr><td><code># Avant-propos {-}</code></td><td>titre sans numéro</td></tr>
+        </table>
+        <p>Une ligne vide sépare deux paragraphes. Les titres « Introduction », « Conclusion », « Bibliographie »,
+          « Remerciements », « Annexes »… ne sont jamais numérotés. La numérotation, le sommaire et les numéros
+          de page sont calculés automatiquement.</p>
+      </details>
+    </div>
+
+    <div class="onglet" id="onglet-forme" hidden>
+      <label class="ligne norme">Norme de départ
+        <select id="norme"></select>
+      </label>
+      <fieldset>
+        <legend>Texte</legend>
+        <label>Police <select data-cle="police" id="choix-police"></select></label>
+        <label>Taille (pt) <input type="number" data-cle="taille" min="8" max="20" step="0.5"></label>
+        <label>Interligne
+          <select data-cle="interligne">
+            <option value="1">Simple (1)</option><option value="1.15">1,15</option>
+            <option value="1.5">1,5 ligne</option><option value="2">Double (2)</option>
+          </select>
+        </label>
+        <label>Alignement <select data-cle="alignement" id="choix-alignement"></select></label>
+        <label>Retrait de 1ʳᵉ ligne (cm) <input type="number" data-cle="retrait" min="0" max="5" step="0.05"></label>
+        <label>Espace après un paragraphe (pt) <input type="number" data-cle="espace_apres" min="0" max="36" step="1"></label>
+      </fieldset>
+      <fieldset>
+        <legend>Marges (cm)</legend>
+        <div class="grille4">
+          <label>Haut <input type="number" data-cle="marge_haut" min="0.5" max="6" step="0.1"></label>
+          <label>Bas <input type="number" data-cle="marge_bas" min="0.5" max="6" step="0.1"></label>
+          <label>Gauche <input type="number" data-cle="marge_gauche" min="0.5" max="6" step="0.1"></label>
+          <label>Droite <input type="number" data-cle="marge_droite" min="0.5" max="6" step="0.1"></label>
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>Titres et numérotation</legend>
+        <label>Numérotation <select data-cle="numerotation" id="choix-numerotation"></select></label>
+        <label>Mot avant le numéro de chapitre <input type="text" data-cle="prefixe_chapitre" placeholder="ex. : Chapitre" maxlength="30"></label>
+        <div class="grille3">
+          <label>Titre 1 (pt) <input type="number" data-cle="tailles_titres" data-index="0" min="8" max="36"></label>
+          <label>Titre 2 (pt) <input type="number" data-cle="tailles_titres" data-index="1" min="8" max="36"></label>
+          <label>Titre 3 (pt) <input type="number" data-cle="tailles_titres" data-index="2" min="8" max="36"></label>
+        </div>
+        <label>Couleur des titres <input type="color" data-cle="couleur_titres"></label>
+        <label class="case"><input type="checkbox" data-cle="chapitre_nouvelle_page"> Chaque chapitre commence sur une nouvelle page</label>
+      </fieldset>
+      <fieldset>
+        <legend>Sommaire et pages</legend>
+        <label class="case"><input type="checkbox" data-cle="sommaire"> Sommaire automatique</label>
+        <label>Titre du sommaire <input type="text" data-cle="titre_sommaire" maxlength="60"></label>
+        <label>Niveaux dans le sommaire
+          <select data-cle="profondeur_sommaire"><option value="1">1 (chapitres)</option><option value="2">2</option><option value="3">3 (tous les titres)</option></select>
+        </label>
+        <label>Numéros de page <select data-cle="pagination" id="choix-pagination"></select></label>
+      </fieldset>
+    </div>
+
+    <div class="onglet" id="onglet-garde" hidden>
+      <label class="case"><input type="checkbox" data-garde="afficher"> Ajouter une page de garde</label>
+      <fieldset>
+        <legend>Informations</legend>
+        <label>Université <input type="text" data-garde="universite" placeholder="Université de …"></label>
+        <label>Faculté, UFR ou école <input type="text" data-garde="faculte"></label>
+        <label>Type de document <input type="text" data-garde="type_document" placeholder="Mémoire de Master 2"></label>
+        <label>Titre du mémoire <textarea data-garde="titre" rows="2"></textarea></label>
+        <label>Sous-titre <input type="text" data-garde="sous_titre"></label>
+        <label>Auteur <input type="text" data-garde="auteur" placeholder="Prénom Nom"></label>
+        <label>Directeur ou directrice <input type="text" data-garde="directeur"></label>
+        <label>Année <input type="text" data-garde="annee" placeholder="Année universitaire 2025-2026"></label>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="apercu" aria-label="Aperçu du mémoire">
+    <div class="commandes-apercu">
+      <span>Aperçu</span>
+      <span class="zoom">
+        <button id="zoom-moins" aria-label="Réduire">−</button>
+        <span id="zoom-valeur">60 %</span>
+        <button id="zoom-plus" aria-label="Agrandir">+</button>
+      </span>
+    </div>
+    <div id="pages"></div>
+    <p class="note">L'aperçu montre la mise en forme de chaque partie. Le découpage exact en pages est celui des fichiers Word et PDF.</p>
+  </section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>

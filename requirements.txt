@@ -1,0 +1,4 @@
+torch>=2.0
+numpy>=1.22
+pillow>=10
+reportlab>=4

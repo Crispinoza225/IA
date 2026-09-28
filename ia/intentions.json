@@ -1,0 +1,64 @@
+{
+  "intentions": [
+    {
+      "nom": "salutation",
+      "exemples": ["bonjour", "salut", "coucou", "hello", "bonsoir", "yo", "salut toi", "bonjour comment vas tu", "hey"],
+      "reponses": ["Bonjour ! 👋", "Salut ! Content de te parler.", "Coucou ! Que puis-je faire pour toi ?"]
+    },
+    {
+      "nom": "au_revoir",
+      "exemples": ["au revoir", "bye", "à plus", "a bientot", "ciao", "bonne nuit", "je dois partir", "salut a plus tard"],
+      "reponses": ["Au revoir ! 👋", "À bientôt !", "Bonne journée !"]
+    },
+    {
+      "nom": "comment_ca_va",
+      "exemples": ["ça va", "comment vas tu", "comment tu vas", "tu vas bien", "quoi de neuf", "comment ça va aujourd'hui"],
+      "reponses": ["Je vais très bien, merci ! Et toi ?", "Tout roule de mon côté, mes neurones sont en forme 🧠"]
+    },
+    {
+      "nom": "identite",
+      "exemples": ["qui es tu", "tu es qui", "c'est quoi ton nom", "comment tu t'appelles", "tu es une ia", "présente toi", "tu es un robot"],
+      "reponses": ["Je suis Neurone, une petite IA écrite en Python pur, avec un réseau de neurones codé à la main."]
+    },
+    {
+      "nom": "fonctionnement",
+      "exemples": ["comment tu marches", "comment tu fonctionnes", "comment tu apprends", "c'est quoi un réseau de neurones", "tu utilises quoi", "explique ton fonctionnement"],
+      "reponses": ["Je transforme ta phrase en « sac de mots », puis mon réseau de neurones (une couche cachée) calcule quelle intention est la plus probable. J'ai appris grâce à la rétropropagation du gradient !"]
+    },
+    {
+      "nom": "remerciement",
+      "exemples": ["merci", "merci beaucoup", "super merci", "c'est gentil", "top merci", "cool merci bien"],
+      "reponses": ["Avec plaisir ! 😊", "De rien !", "Je t'en prie."]
+    },
+    {
+      "nom": "blague",
+      "exemples": ["raconte une blague", "dis moi une blague", "fais moi rire", "tu connais une blague", "une blague stp", "quelque chose de drôle"],
+      "reponses": [
+        "Pourquoi les plongeurs plongent-ils toujours en arrière ? Parce que sinon ils tombent dans le bateau ! 🤿",
+        "Que dit un informaticien quand il se noie ? F1 ! F1 ! 💻",
+        "C'est l'histoire d'un pingouin qui respire par les fesses. Un jour il s'assoit… et il meurt. 🐧",
+        "Il y a 10 types de personnes : celles qui comprennent le binaire et les autres."
+      ]
+    },
+    {
+      "nom": "heure",
+      "exemples": ["quelle heure est il", "il est quelle heure", "tu as l'heure", "donne moi l'heure", "l'heure stp"],
+      "reponses": ["{heure}"]
+    },
+    {
+      "nom": "date",
+      "exemples": ["quel jour sommes nous", "on est quel jour", "quelle est la date", "c'est quoi la date aujourd'hui", "date du jour"],
+      "reponses": ["{date}"]
+    },
+    {
+      "nom": "aide",
+      "exemples": ["aide", "aide moi", "que sais tu faire", "tu sais faire quoi", "qu'est ce que tu peux faire", "help", "commandes"],
+      "reponses": ["Je peux discuter, raconter des blagues, donner l'heure et la date, et faire des calculs (ex : « calcule 12 * 7 »). Si je ne comprends pas, tu peux m'apprendre une nouvelle réponse !"]
+    },
+    {
+      "nom": "calcul",
+      "exemples": ["calcule 2 + 2", "combien font 3 fois 4", "calcul 10 / 2", "combien fait 7 moins 3", "résous 5 * 6", "fais le calcul 8 plus 9"],
+      "reponses": ["{calcul}"]
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Démonstration</title>
+<style>
+  body { font-family: serif; max-width: 760px; margin: 0 auto; padding: 16px 24px; line-height: 1.4; }
+  h1 { color: #7c2d12; border-bottom: 3px solid #fdba74; padding-bottom: 6px; }
+  h2 { font-family: sans-serif; color: #9a3412; margin-top: 28px; }
+  .note { background: #fff7ed; border-left: 6px solid #fb923c; padding: 10px 16px; }
+  .boites div { display: block; padding: 10px; margin: 8px 0; color: white; font-family: sans-serif; }
+  #rouge { background: #dc2626; width: 50%; }
+  #vert { background: #16a34a; width: 70%; margin-left: auto; margin-right: auto; text-align: center; }
+  #bleu { background: #2563eb; border: 4px solid #1e3a8a; text-align: right; }
+  pre { background: #1f2937; color: #e5e7eb; padding: 12px; }
+  .petit { font-size: 0.8em; color: gray; }
+  nav a { margin-right: 12px; }
+</style>
+</head>
+<body>
+<nav><a href="about:accueil">← Accueil</a> <a href="#formulaire">Aller au formulaire</a></nav>
+
+<h1>Ce que Toile sait afficher</h1>
+
+<p class="note">Cette page est dessinée par un moteur de rendu écrit à la main : <b>analyse du HTML</b>,
+<i>calcul des styles CSS</i>, <u>mise en page</u> et dessin. Aucune bibliothèque web n'est utilisée.</p>
+
+<h2>Texte</h2>
+<p>Du texte <b>gras</b>, <i>italique</i>, <b><i>les deux</i></b>, <u>souligné</u>, <s>barré</s>,
+<code>du code</code>, <small>petit</small>, <big>grand</big>, et <a href="about:fonctionnement">un lien</a>.
+Les mots passent automatiquement à la ligne quand la fenêtre est trop étroite : essaie de la redimensionner !</p>
+<p style="text-align:center; color: #6d28d9; font-size: 20px">Un paragraphe centré, en violet, avec l'attribut style.</p>
+
+<h2>Listes</h2>
+<ul>
+  <li>Une liste à puces
+    <ul><li>avec une sous-liste</li><li>à deux éléments</li></ul>
+  </li>
+  <li>et un troisième élément</li>
+</ul>
+<ol>
+  <li>Télécharger la page</li>
+  <li>Construire l'arbre HTML</li>
+  <li>Calculer les styles</li>
+  <li>Mettre en page, puis dessiner</li>
+</ol>
+
+<h2>Boîtes, couleurs et bordures</h2>
+<div class="boites">
+  <div id="rouge">50 % de largeur</div>
+  <div id="vert">70 %, centrée avec margin: auto</div>
+  <div id="bleu">Bordure épaisse, texte à droite</div>
+</div>
+
+<h2>Texte préformaté</h2>
+<pre>def bonjour():
+    print("Les espaces    sont    conservés")</pre>
+
+<h2 id="formulaire">Formulaire</h2>
+<form>
+  <p>Nom : <input type="text" placeholder="Ton prénom"> <input type="checkbox" checked> Se souvenir de moi</p>
+  <p><select><option>Choisis une planète</option><option>Mars</option></select> <button>Envoyer</button></p>
+</form>
+<p><img alt="Une image (Toile affiche le texte alternatif)" src="photo.png"></p>
+
+<hr>
+<p class="petit">Page de démonstration de Toile.</p>
+</body>
+</html>
