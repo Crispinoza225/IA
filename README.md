@@ -12,6 +12,7 @@ Ce dépôt contient des projets construits à partir de zéro, pour comprendre d
 | 🌌 **[Galaxie](galaxie/README.md)** | Un simulateur de galaxies : gravité de Barnes-Hut, collisions, bras spiraux | NumPy, Pillow |
 | § **[Mémoire](memoire/README.md)** | Une plateforme de mise en forme de mémoire : styles, numérotation, sommaire, export Word et PDF | reportlab (PDF) |
 | ✍️ **[Rédigo](redigo/README.md)** | La même plateforme en ligne (SaaS) : comptes, bibliographie APA / ISO 690, commentaires du directeur, versions, abonnements | reportlab (PDF) |
+| 🤝 **[Cotiz](cotiz/README.md)** | La tontine en ligne (SaaS) : calendrier des tours, cotisations Mobile Money, rappels WhatsApp, journal infalsifiable | aucune |
 
 ```bash
 python3 -m ia                                        # discuter avec Neurone
@@ -23,6 +24,7 @@ python3 -m toile about:demo                          # ouvrir le navigateur
 python3 -m galaxie collision                         # animation de deux galaxies qui se croisent
 python3 -m memoire                                   # plateforme de mise en forme de mémoire
 python3 -m redigo                                    # Rédigo, la version en ligne, sur http://127.0.0.1:8060/
+python3 -m cotiz                                     # Cotiz, la tontine en ligne, sur http://127.0.0.1:8070/
 ```
 
 ---
