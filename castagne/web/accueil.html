@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Castagne</title>
+  <meta name="description" content="Crée ta brute, elle se bat toute seule. Monte de niveau, gagne des armes, recrute des élèves.">
+  <link rel="icon" href="/static/icone.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="entete">
+    <a class="logo" href="/"><i>🥊</i>CASTA<span>GNE</span></a>
+    <nav class="nav"><a href="/jeu#classement">Classement</a></nav>
+  </header>
+
+  <main class="page">
+    <section class="hero">
+      <div>
+        <h1 class="hero-titre">CASTAGNE</h1>
+        <p class="hero-sous">Crée ta brute en dix secondes. Elle se bat <b>toute seule</b> : toi, tu la regardes cogner, tu choisis ses nouvelles armes et ses techniques à chaque niveau, et tu recrutes des élèves.</p>
+        <p class="petit">Six combats par jour, un tournoi chaque nuit. Gratuit, sans téléchargement.</p>
+      </div>
+
+      <div class="cadre">
+        <div class="onglets" role="tablist">
+          <button class="actif" data-onglet="creer" role="tab">Créer ma brute</button>
+          <button data-onglet="connexion" role="tab">J'ai déjà une brute</button>
+        </div>
+
+        <form id="formCreer" autocomplete="off">
+          <div class="maitre-bandeau" id="maitreBandeau" hidden></div>
+          <div class="creation">
+            <div class="apercu">
+              <div id="apercu"></div>
+              <div class="apercu-boutons">
+                <button type="button" class="btn petit-btn" id="autreTete">🎲 Autre tête</button>
+                <button type="button" class="btn petit-btn" id="genre">♀ / ♂</button>
+              </div>
+            </div>
+            <div>
+              <label for="nom">Nom de ta brute</label>
+              <input type="text" id="nom" maxlength="20" required placeholder="Ex. : Grobul" autocomplete="off">
+              <label for="mdp">Mot de passe</label>
+              <input type="password" id="mdp" minlength="8" required placeholder="8 caractères minimum" autocomplete="new-password">
+              <p class="petit">Il protège ta brute : personne d'autre ne pourra la faire combattre.</p>
+              <button class="btn rouge" type="submit" style="width:100%">Créer ma brute</button>
+              <p class="erreur" id="erreurCreer" role="alert"></p>
+            </div>
+          </div>
+        </form>
+
+        <form id="formConnexion" hidden>
+          <label for="nomConnexion">Nom de ta brute</label>
+          <input type="text" id="nomConnexion" required autocomplete="username">
+          <label for="mdpConnexion">Mot de passe</label>
+          <input type="password" id="mdpConnexion" required autocomplete="current-password">
+          <button class="btn rouge" type="submit" style="width:100%;margin-top:16px">Retrouver ma brute</button>
+          <p class="erreur" id="erreurConnexion" role="alert"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="atouts">
+      <div class="cadre atout"><div class="emoji">⚔️</div><b>Des combats automatiques</b>Ta brute choisit ses coups toute seule : esquives, parades, contre-attaques, armes lancées… et ses animaux s'en mêlent.</div>
+      <div class="cadre atout"><div class="emoji">⭐</div><b>Choisis sa progression</b>À chaque niveau, deux bonus au choix : plus de force, une nouvelle arme parmi vingt, une technique parmi dix-huit, ou un animal.</div>
+      <div class="cadre atout"><div class="emoji">🎓</div><b>Recrute des élèves</b>Partage ton lien : chaque victoire de tes élèves te rapporte de l'expérience. Et chaque nuit, un tournoi.</div>
+    </section>
+
+    <section class="cadre">
+      <h2>🏆 Les meilleures brutes</h2>
+      <table class="classement" id="top"><tbody><tr><td class="vide">Chargement…</td></tr></tbody></table>
+      <p><a href="/jeu#classement">Voir tout le classement</a></p>
+    </section>
+  </main>
+
+  <script src="/static/commun.js"></script>
+  <script src="/static/accueil.js"></script>
+</body>
+</html>

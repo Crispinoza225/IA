@@ -1,0 +1,223 @@
+/* Castagne : un parchemin, de l'encre brune, une arène. */
+:root {
+  --papier: #f4e6c8; --papier-2: #ead6ae; --papier-3: #dcc393; --encre: #3b2a1a; --encre-douce: #6b5440;
+  --rouge: #c0392b; --rouge-fonce: #8e2a1f; --or: #d9a441; --vert: #3f8f3a; --bleu: #2f6690;
+  --titre: "Arial Black", "Segoe UI Black", Impact, system-ui, sans-serif;
+  --texte: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+  --ombre: 0 3px 0 var(--encre);
+}
+* { box-sizing: border-box; }
+html { background: #2a1d12; }
+body {
+  margin: 0; min-height: 100vh; color: var(--encre); font: 16px/1.5 var(--texte);
+  background: radial-gradient(ellipse at top, #f7ecd3, var(--papier) 45%, var(--papier-2));
+}
+a { color: var(--rouge-fonce); }
+h1, h2, h3 { font-family: var(--titre); line-height: 1.1; margin: 0 0 .5em; letter-spacing: .01em; }
+h2 { font-size: 1.5rem; text-transform: uppercase; }
+h3 { font-size: 1.05rem; text-transform: uppercase; }
+.petit { font-size: .85rem; color: var(--encre-douce); }
+[hidden] { display: none !important; }
+
+/* --- Boutons, champs ---------------------------------------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer;
+  font: 700 1rem var(--titre); text-transform: uppercase; letter-spacing: .02em; text-decoration: none;
+  padding: 12px 20px; border: 3px solid var(--encre); border-radius: 12px; color: var(--encre);
+  background: var(--papier); box-shadow: var(--ombre); transition: transform .08s, box-shadow .08s;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 0 var(--encre); }
+.btn:active { transform: translateY(3px); box-shadow: 0 0 0 var(--encre); }
+.btn:disabled { opacity: .5; cursor: not-allowed; transform: none; box-shadow: var(--ombre); }
+.btn.rouge { background: var(--rouge); color: #fff7e6; }
+.btn.or { background: var(--or); }
+.btn.petit-btn { padding: 7px 12px; font-size: .8rem; border-width: 2px; box-shadow: 0 2px 0 var(--encre); }
+label { display: block; font-weight: 700; margin: 12px 0 4px; }
+input[type=text], input[type=password] {
+  width: 100%; font: 1.05rem var(--texte); padding: 11px 13px; color: var(--encre);
+  background: #fffaf0; border: 3px solid var(--encre); border-radius: 10px; outline: none;
+}
+input:focus { box-shadow: 0 0 0 3px var(--or); }
+.erreur { color: var(--rouge-fonce); font-weight: 700; min-height: 1.5em; margin: 8px 0 0; }
+
+/* --- Cadres ------------------------------------------------------------------------------------------------------- */
+.cadre {
+  background: #fbf3e0; border: 3px solid var(--encre); border-radius: 18px; padding: 20px;
+  box-shadow: 0 5px 0 var(--encre);
+}
+.page { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
+
+/* --- En-tête ------------------------------------------------------------------------------------------------------ */
+.entete {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 12px 16px; background: var(--encre); color: var(--papier);
+}
+.logo { font: 900 1.7rem var(--titre); color: var(--papier); text-decoration: none; letter-spacing: .04em; }
+.logo span { color: var(--or); }
+.logo i { font-style: normal; margin-right: 6px; }
+.nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.nav a, .nav button {
+  font: 700 .85rem var(--titre); text-transform: uppercase; color: var(--papier); text-decoration: none;
+  padding: 8px 12px; border-radius: 10px; border: 2px solid transparent; background: none; cursor: pointer;
+}
+.nav a:hover, .nav button:hover { border-color: var(--papier-3); }
+.nav a.actif { background: var(--or); color: var(--encre); }
+
+/* --- Accueil ------------------------------------------------------------------------------------------------------- */
+.hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-top: 12px; }
+.hero-titre { font: 900 clamp(3rem, 9vw, 5.6rem)/0.9 var(--titre); color: var(--rouge); text-shadow: 4px 4px 0 var(--encre); margin: 0 0 12px; letter-spacing: .02em; }
+.hero-sous { font-size: 1.2rem; max-width: 34em; }
+.creation { display: grid; grid-template-columns: 190px 1fr; gap: 18px; align-items: center; }
+.apercu { text-align: center; }
+.apercu .brute { width: 190px; height: 235px; }
+.apercu-boutons { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
+.onglets { display: flex; gap: 6px; margin-bottom: 14px; }
+.onglets button { flex: 1; font: 700 .9rem var(--titre); text-transform: uppercase; padding: 10px; border: 3px solid var(--encre); border-radius: 10px; background: var(--papier-2); color: var(--encre); cursor: pointer; }
+.onglets button.actif { background: var(--encre); color: var(--papier); }
+.maitre-bandeau { background: var(--or); border: 3px solid var(--encre); border-radius: 12px; padding: 8px 12px; font-weight: 700; margin-bottom: 12px; }
+.atouts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 36px 0; }
+.atout { text-align: center; }
+.atout b { display: block; font: 900 1.1rem var(--titre); text-transform: uppercase; margin: 6px 0; }
+.atout .emoji { font-size: 2.4rem; }
+
+/* --- Fiche de brute ---------------------------------------------------------------------------------------------- */
+.fiche { display: grid; grid-template-columns: 260px 1fr; gap: 24px; }
+.portrait { text-align: center; position: relative; }
+.portrait .brute { width: 250px; height: 310px; }
+.portrait .animaux { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; margin-top: -30px; }
+.portrait .animaux .animal { width: calc(80px * var(--taille)); height: calc(60px * var(--taille)); }
+.nom-brute { font: 900 2.2rem var(--titre); margin: 0; color: var(--rouge); text-shadow: 2px 2px 0 var(--encre); word-break: break-word; }
+.niveau { display: inline-block; font: 900 .9rem var(--titre); background: var(--encre); color: var(--or); padding: 4px 10px; border-radius: 8px; margin: 6px 0; }
+.jauge { height: 18px; border: 3px solid var(--encre); border-radius: 10px; background: #fffaf0; overflow: hidden; }
+.jauge > i { display: block; height: 100%; background: linear-gradient(var(--or), #c28a2c); }
+.jauge.pv > i { background: linear-gradient(#e0574a, var(--rouge)); }
+.caracs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 18px; margin: 14px 0; }
+.carac { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; font-weight: 700; }
+.carac .jauge { grid-column: 1 / -1; height: 12px; border-width: 2px; }
+.carac .jauge > i { background: linear-gradient(#5aa7d6, var(--bleu)); }
+.liste-objets { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; padding: 0; list-style: none; }
+.objet { display: flex; align-items: center; gap: 6px; background: #fffaf0; border: 2px solid var(--encre); border-radius: 10px; padding: 4px 10px 4px 4px; font-weight: 700; font-size: .9rem; }
+.objet .icone { width: 26px; height: 40px; }
+.objet .animal { width: 42px; height: 32px; }
+.competence { padding: 5px 10px; cursor: help; }
+.vide { color: var(--encre-douce); font-style: italic; }
+.bilan { display: flex; gap: 14px; flex-wrap: wrap; font-weight: 700; }
+.bilan .v { color: var(--vert); } .bilan .d { color: var(--rouge); }
+
+.grille-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 16px 0 0; }
+.compteur { font: 900 1.1rem var(--titre); }
+.compteur b { color: var(--rouge); font-size: 1.6rem; }
+
+/* Choix de niveau */
+.choix-niveau { border-color: var(--rouge); background: #fff3d6; text-align: center; margin-bottom: 20px; }
+.choix-niveau h2 { color: var(--rouge); }
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+.option { font: 700 1.05rem var(--texte); text-transform: none; padding: 18px; flex-direction: column; min-height: 110px; }
+.option small { font: .85rem var(--texte); color: var(--encre-douce); }
+.option .icone { width: 30px; height: 46px; }
+.option .animal { width: 70px; height: 52px; }
+
+/* Historique, élèves */
+.historique { list-style: none; padding: 0; margin: 0; }
+.historique li { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 2px dashed var(--papier-3); }
+.historique .res { font: 900 .8rem var(--titre); padding: 3px 7px; border-radius: 6px; color: #fff; }
+.historique .res.v { background: var(--vert); } .historique .res.d { background: var(--rouge); }
+.historique a.revoir { margin-left: auto; font-weight: 700; }
+.lien-eleve { display: flex; gap: 6px; }
+.lien-eleve input { font-size: .85rem; }
+
+/* --- Arène : choix de l'adversaire ------------------------------------------------------------------------------- */
+.adversaires { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 14px; margin-top: 16px; }
+.adversaire { text-align: center; padding: 12px; cursor: pointer; transition: transform .1s; }
+.adversaire:hover { transform: translateY(-3px) rotate(-1deg); }
+.adversaire .brute { width: 130px; height: 160px; transform: scaleX(-1); }
+.adversaire b { display: block; font: 900 1.05rem var(--titre); word-break: break-word; }
+
+/* --- Combat --------------------------------------------------------------------------------------------------------- */
+.combat { max-width: 980px; margin: 0 auto; }
+.arene {
+  position: relative; height: 420px; overflow: hidden; border: 4px solid var(--encre); border-radius: 18px;
+  background:
+    linear-gradient(transparent 62%, #b98b53 62%, #a27443 100%),
+    repeating-linear-gradient(90deg, #cfae7c 0 60px, #c4a26f 60px 62px),
+    linear-gradient(#e9cf9c, #d9b77f);
+  box-shadow: 0 6px 0 var(--encre);
+}
+.arene::before { /* les gradins */
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 110px;
+  background: radial-gradient(circle at 10px 16px, #8a5a32 7px, transparent 8px) 0 0 / 22px 26px,
+              linear-gradient(#6b4428, #8b5e3c); opacity: .75;
+}
+.arene::after { content: ""; position: absolute; left: 0; right: 0; bottom: 36%; height: 6px; background: var(--encre); opacity: .5; }
+.hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; gap: 12px; z-index: 5; }
+.hud-brute { width: min(46%, 330px); background: #fbf3e0; border: 3px solid var(--encre); border-radius: 12px; padding: 6px 10px; }
+.hud-brute.droite { text-align: right; }
+.hud-brute b { font: 900 1rem var(--titre); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hud-brute .jauge { height: 14px; margin-top: 3px; }
+.hud-brute.droite .jauge > i { margin-left: auto; }
+.hud-brute .pv-texte { font-size: .75rem; font-weight: 700; }
+.jauge > i { transition: width .25s; }
+.combattant { position: absolute; bottom: 52px; width: 170px; margin-left: -85px; z-index: 3; }
+.combattant.equipe-1 .dessin { transform: scaleX(-1); }
+.combattant .dessin svg.brute { width: 170px; height: 210px; display: block; }
+.combattant.animal { width: 130px; margin-left: -65px; bottom: 44px; z-index: 2; }
+.combattant.animal .dessin svg { width: calc(130px * var(--taille)); height: calc(98px * var(--taille)); display: block; margin: 0 auto; }
+.combattant .mini-pv { height: 7px; width: 54px; margin: 0 auto 2px; border-width: 2px; }
+.combattant.ko { filter: grayscale(.7); }
+.bulle {
+  position: absolute; left: 50%; top: -12px; transform: translate(-50%, -100%); white-space: nowrap; z-index: 8;
+  font: 900 .95rem var(--titre); text-transform: uppercase; background: #fffaf0; border: 3px solid var(--encre);
+  border-radius: 12px; padding: 3px 9px; pointer-events: none;
+}
+.degats {
+  position: absolute; left: 50%; top: 10px; transform: translateX(-50%); z-index: 9; pointer-events: none;
+  font: 900 1.8rem var(--titre); color: var(--rouge); -webkit-text-stroke: 1.5px var(--encre); text-shadow: 2px 2px 0 var(--encre);
+}
+.degats.soin { color: #6fd36a; }
+.projectile { position: absolute; width: 36px; height: 60px; z-index: 7; pointer-events: none; }
+.projectile .icone { width: 36px; height: 60px; }
+.controles { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 16px 0; }
+.controles .btn.actif { background: var(--or); }
+.fin-combat {
+  position: absolute; inset: 0; display: grid; place-items: center; z-index: 20; background: rgba(59, 42, 26, .55);
+  animation: apparaitre .4s;
+}
+.fin-combat > div { text-align: center; background: #fbf3e0; border: 4px solid var(--encre); border-radius: 18px; padding: 18px 26px; box-shadow: 0 6px 0 var(--encre); max-width: 90%; }
+.fin-combat h2 { font-size: clamp(1.4rem, 5vw, 2.2rem); color: var(--rouge); text-shadow: 2px 2px 0 var(--encre); }
+@keyframes apparaitre { from { opacity: 0; } }
+.journal { max-height: 220px; overflow: auto; margin: 0; padding: 10px 14px; list-style: none; font-size: .92rem; }
+.journal li { padding: 2px 0; border-bottom: 1px dashed var(--papier-3); }
+.journal li b { font-weight: 800; }
+
+/* --- Tournoi, classement ------------------------------------------------------------------------------------------ */
+.tableau { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: center; }
+.manche { display: grid; gap: 12px; }
+.match { background: #fffaf0; border: 2px solid var(--encre); border-radius: 10px; padding: 6px 10px; font-size: .9rem; }
+.match div { display: flex; justify-content: space-between; gap: 6px; }
+.match .gagne { font-weight: 800; color: var(--vert); }
+.match a { font-size: .8rem; font-weight: 700; }
+.champion { text-align: center; font: 900 1.3rem var(--titre); margin-top: 14px; color: var(--rouge); }
+table.classement { width: 100%; border-collapse: collapse; }
+.classement th, .classement td { text-align: left; padding: 8px 6px; border-bottom: 2px dashed var(--papier-3); }
+.classement th { font: 900 .8rem var(--titre); text-transform: uppercase; }
+.classement td.tete { width: 52px; padding: 0; }
+.classement td.tete svg { width: 50px; height: 50px; }
+.classement .rang { font: 900 1.1rem var(--titre); width: 40px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 50; max-width: calc(100% - 32px);
+  background: var(--encre); color: var(--papier); padding: 12px 18px; border-radius: 12px; font-weight: 700;
+}
+
+@media (max-width: 800px) {
+  .hero, .fiche, .grille-2 { grid-template-columns: 1fr; }
+  .creation { grid-template-columns: 1fr; }
+  .atouts { grid-template-columns: 1fr; margin: 24px 0; }
+  .tableau { grid-template-columns: 1fr; }
+  .arene { height: 340px; }
+  .combattant { transform: scale(.62); transform-origin: bottom center; bottom: 40px; }
+  .combattant.animal { bottom: 36px; }
+  .options { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) { .btn, .adversaire { transition: none; } }
