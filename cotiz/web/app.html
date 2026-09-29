@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f6b54">
+<title>Cotiz</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ============ Invitation (lien /rejoindre/…) ============ -->
+<section id="carte-invitation" class="invitation" hidden>
+  <p class="etiquette">Tu es invité(e) à rejoindre une tontine</p>
+  <h1 id="inv-nom"></h1>
+  <p id="inv-description" class="doux"></p>
+  <dl class="chiffres">
+    <div><dt>Cotisation</dt><dd id="inv-montant"></dd></div>
+    <div><dt>Rythme</dt><dd id="inv-frequence"></dd></div>
+    <div><dt>Début</dt><dd id="inv-debut"></dd></div>
+    <div><dt>Membres</dt><dd id="inv-membres"></dd></div>
+  </dl>
+  <p class="doux">Organisée par <b id="inv-organisateur"></b></p>
+  <button class="principal large" id="inv-rejoindre" hidden>Rejoindre cette tontine</button>
+  <p id="inv-message" class="message"></p>
+</section>
+
+<!-- ============ Connexion / inscription ============ -->
+<section id="vue-auth" class="vue auth" hidden>
+  <div class="carte-auth">
+    <a class="marque" href="/"><span class="logo">C</span><b>Cotiz</b></a>
+    <nav class="onglets-auth" role="tablist">
+      <button role="tab" data-auth="connexion" aria-selected="true">Connexion</button>
+      <button role="tab" data-auth="inscription" aria-selected="false">Créer un compte</button>
+    </nav>
+    <form data-formulaire="connexion">
+      <label>Numéro de téléphone <input type="tel" name="telephone" autocomplete="tel" required placeholder="+221 77 123 45 67"></label>
+      <label>Mot de passe <input type="password" name="mot_de_passe" autocomplete="current-password" required></label>
+      <button class="principal" type="submit">Se connecter</button>
+    </form>
+    <form data-formulaire="inscription" hidden>
+      <label>Prénom et nom <input type="text" name="nom" autocomplete="name" maxlength="80" required></label>
+      <label>Numéro de téléphone <input type="tel" name="telephone" autocomplete="tel" required placeholder="+221 77 123 45 67"></label>
+      <label>Mot de passe <input type="password" name="mot_de_passe" autocomplete="new-password" minlength="8" required placeholder="8 caractères au moins"></label>
+      <button class="principal" type="submit">Créer mon compte gratuit</button>
+      <p class="petit">Si un organisateur t'a déjà ajouté(e) avec ce numéro, tu retrouveras ta tontine tout de suite.</p>
+    </form>
+    <p id="message-auth" class="message" role="status"></p>
+  </div>
+</section>
+
+<!-- ============ Tableau de bord ============ -->
+<section id="vue-tableau" class="vue" hidden>
+  <header class="barre">
+    <a class="marque" href="/app#tontines"><span class="logo">C</span><b>Cotiz</b></a>
+    <div class="droite">
+      <button class="badge-formule" data-ouvrir="formule"></button>
+      <button class="compte" data-ouvrir="compte" aria-label="Mon compte"></button>
+    </div>
+  </header>
+  <main class="contenu">
+    <div class="salut">
+      <div>
+        <h1 id="salut"></h1>
+        <p id="fiabilite" class="doux"></p>
+      </div>
+      <button class="principal" id="nouvelle-tontine">+ Créer une tontine</button>
+    </div>
+    <div id="liste-tontines" class="liste-tontines"></div>
+  </main>
+</section>
+
+<!-- ============ Une tontine ============ -->
+<section id="vue-tontine" class="vue" hidden>
+  <header class="barre">
+    <a class="retour" href="/app#tontines" aria-label="Retour à mes tontines">←</a>
+    <div class="titre-barre">
+      <b id="t-nom"></b>
+      <span id="t-sous-titre" class="petit"></span>
+    </div>
+  </header>
+  <nav class="onglets" role="tablist">
+    <button role="tab" data-onglet="tour" aria-selected="true">Tour</button>
+    <button role="tab" data-onglet="calendrier" aria-selected="false">Calendrier</button>
+    <button role="tab" data-onglet="membres" aria-selected="false">Membres</button>
+    <button role="tab" data-onglet="journal" aria-selected="false">Journal</button>
+    <button role="tab" data-onglet="reglages" aria-selected="false" data-organisateur>Réglages</button>
+  </nav>
+  <main class="contenu">
+    <div class="onglet" id="onglet-tour"></div>
+    <div class="onglet" id="onglet-calendrier" hidden></div>
+    <div class="onglet" id="onglet-membres" hidden></div>
+    <div class="onglet" id="onglet-journal" hidden></div>
+    <div class="onglet" id="onglet-reglages" hidden></div>
+  </main>
+</section>
+
+<!-- ============ Dialogues ============ -->
+<dialog id="dialogue-tontine">
+  <form method="dialog" id="form-tontine">
+    <h2 id="titre-dialogue-tontine">Nouvelle tontine</h2>
+    <label>Nom de la tontine <input type="text" name="nom" maxlength="80" required placeholder="ex. : Les amies du quartier"></label>
+    <label>Description (facultatif) <input type="text" name="description" maxlength="500" placeholder="ex. : pour les fêtes de fin d'année"></label>
+    <div class="grille2">
+      <label>Cotisation par personne <input type="text" name="montant" inputmode="decimal" required placeholder="10 000"></label>
+      <label>Monnaie <select name="devise" id="choix-devise"></select></label>
+    </div>
+    <div class="grille2">
+      <label>Rythme <select name="frequence" id="choix-frequence"></select></label>
+      <label>Premier tour le <input type="date" name="date_debut" required></label>
+    </div>
+    <label>Ordre des bénéficiaires <select name="mode_ordre" id="choix-ordre"></select></label>
+    <div class="grille2">
+      <label>Pénalité de retard (facultatif) <input type="text" name="penalite" inputmode="decimal" placeholder="0"></label>
+      <label>Délai de grâce (jours) <input type="number" name="jours_grace" min="0" max="30" value="0"></label>
+    </div>
+    <p id="message-tontine" class="message"></p>
+    <div class="boutons">
+      <button value="annuler" formnovalidate>Annuler</button>
+      <button class="principal" value="valider">Créer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-paiement">
+  <form method="dialog" id="form-paiement">
+    <h2 id="titre-paiement">J'ai payé ma cotisation</h2>
+    <p id="aide-paiement" class="doux"></p>
+    <div class="grille2">
+      <label>Montant <input type="text" name="montant" inputmode="decimal" required></label>
+      <label>Moyen <select name="moyen" id="choix-moyen"></select></label>
+    </div>
+    <label>Référence de la transaction (facultatif) <input type="text" name="reference" maxlength="100" placeholder="ex. : le code reçu par SMS"></label>
+    <p id="message-paiement" class="message"></p>
+    <div class="boutons">
+      <button value="annuler" formnovalidate>Annuler</button>
+      <button class="principal" value="valider">Enregistrer</button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-formule">
+  <form method="dialog">
+    <h2>Ta formule</h2>
+    <p id="formule-actuelle"></p>
+    <div class="offre">
+      <h3>Organisateur — <span id="prix-formule"></span> / mois</h3>
+      <ul>
+        <li>Jusqu'à 20 tontines en même temps</li>
+        <li>Jusqu'à 100 membres par tontine</li>
+        <li>Export Excel de toutes les cotisations</li>
+      </ul>
+      <button class="principal" type="button" id="payer">Passer à la formule Organisateur</button>
+      <p id="note-paiement" class="petit"></p>
+    </div>
+    <p id="message-formule" class="message"></p>
+    <div class="boutons"><button value="fermer">Fermer</button></div>
+  </form>
+</dialog>
+
+<dialog id="dialogue-compte">
+  <form method="dialog">
+    <h2>Mon compte</h2>
+    <p id="compte-infos"></p>
+    <details>
+      <summary>Changer mon mot de passe</summary>
+      <div class="pile">
+        <input type="password" id="mdp-actuel" placeholder="Mot de passe actuel" autocomplete="current-password" aria-label="Mot de passe actuel">
+        <input type="password" id="mdp-nouveau" placeholder="Nouveau mot de passe" autocomplete="new-password" aria-label="Nouveau mot de passe">
+        <button type="button" id="changer-mdp">Changer</button>
+      </div>
+    </details>
+    <p id="message-compte" class="message"></p>
+    <div class="boutons">
+      <button type="button" id="deconnexion">Se déconnecter</button>
+      <button value="fermer">Fermer</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" hidden></div>
+<script src="/static/commun.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
