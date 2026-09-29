@@ -1,16 +1,16 @@
 /* Castagne : un parchemin, de l'encre brune, une arène. */
 :root {
-  --papier: #f4e6c8; --papier-2: #ead6ae; --papier-3: #dcc393; --encre: #3b2a1a; --encre-douce: #6b5440;
+  --papier: #fff3cf; --papier-2: #f6e3ae; --papier-3: #e3c98a; --encre: #5a3a1e; --encre-douce: #8a6a48;
   --rouge: #c0392b; --rouge-fonce: #8e2a1f; --or: #d9a441; --vert: #3f8f3a; --bleu: #2f6690;
   --titre: "Arial Black", "Segoe UI Black", Impact, system-ui, sans-serif;
   --texte: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
   --ombre: 0 3px 0 var(--encre);
 }
 * { box-sizing: border-box; }
-html { background: #2a1d12; }
+html { background: #eea56f; }
 body {
   margin: 0; min-height: 100vh; color: var(--encre); font: 16px/1.5 var(--texte);
-  background: radial-gradient(ellipse at top, #f7ecd3, var(--papier) 45%, var(--papier-2));
+  background: radial-gradient(ellipse at top, #f9c89a, #f0ad78 55%, #e79a62);
 }
 a { color: var(--rouge-fonce); }
 h1, h2, h3 { font-family: var(--titre); line-height: 1.1; margin: 0 0 .5em; letter-spacing: .01em; }
@@ -42,34 +42,38 @@ input:focus { box-shadow: 0 0 0 3px var(--or); }
 
 /* --- Cadres ------------------------------------------------------------------------------------------------------- */
 .cadre {
-  background: #fbf3e0; border: 3px solid var(--encre); border-radius: 18px; padding: 20px;
-  box-shadow: 0 5px 0 var(--encre);
+  background: linear-gradient(#fffbe6, var(--papier)); border: 3px solid #b0773f; border-radius: 22px 16px 24px 14px; padding: 20px;
+  box-shadow: inset 0 0 0 3px #fff8dc, 0 5px 0 #b0773f;
 }
 .page { max-width: 1100px; margin: 0 auto; padding: 20px 16px 60px; }
 
 /* --- En-tête ------------------------------------------------------------------------------------------------------ */
 .entete {
   display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  padding: 12px 16px; background: var(--encre); color: var(--papier);
+  padding: 10px 16px; color: var(--encre);
+  background: linear-gradient(#f7d9a6, #edc27f); border-bottom: 4px solid #b0773f;
 }
-.logo { font: 900 1.7rem var(--titre); color: var(--papier); text-decoration: none; letter-spacing: .04em; }
-.logo span { color: var(--or); }
+.logo, .hero-titre {
+  font: 900 2rem var(--titre); letter-spacing: .05em; text-decoration: none; color: #f3dcae;
+  -webkit-text-stroke: 2px var(--encre); paint-order: stroke fill; text-shadow: 3px 4px 0 var(--encre);
+}
+.logo span, .hero-titre span { color: #d9573b; }
 .logo i { font-style: normal; margin-right: 6px; }
 .nav { display: flex; gap: 6px; flex-wrap: wrap; }
 .nav a, .nav button {
-  font: 700 .85rem var(--titre); text-transform: uppercase; color: var(--papier); text-decoration: none;
+  font: 700 .85rem var(--titre); text-transform: uppercase; color: var(--encre); text-decoration: none;
   padding: 8px 12px; border-radius: 10px; border: 2px solid transparent; background: none; cursor: pointer;
 }
-.nav a:hover, .nav button:hover { border-color: var(--papier-3); }
+.nav a:hover, .nav button:hover { border-color: var(--encre); }
 .nav a.actif { background: var(--or); color: var(--encre); }
 
 /* --- Accueil ------------------------------------------------------------------------------------------------------- */
 .hero { display: grid; grid-template-columns: 1.1fr 1fr; gap: 28px; align-items: center; margin-top: 12px; }
-.hero-titre { font: 900 clamp(3rem, 9vw, 5.6rem)/0.9 var(--titre); color: var(--rouge); text-shadow: 4px 4px 0 var(--encre); margin: 0 0 12px; letter-spacing: .02em; }
+.hero-titre { font-size: clamp(3rem, 9vw, 5.6rem); line-height: .9; margin: 0 0 12px; -webkit-text-stroke: 4px var(--encre); text-shadow: 5px 6px 0 var(--encre); }
 .hero-sous { font-size: 1.2rem; max-width: 34em; }
-.creation { display: grid; grid-template-columns: 190px 1fr; gap: 18px; align-items: center; }
+.creation { display: grid; grid-template-columns: 210px 1fr; gap: 18px; align-items: center; }
 .apercu { text-align: center; }
-.apercu .brute { width: 190px; height: 235px; }
+.apercu .brute { width: 210px; height: 250px; }
 .apercu-boutons { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; }
 .onglets { display: flex; gap: 6px; margin-bottom: 14px; }
 .onglets button { flex: 1; font: 700 .9rem var(--titre); text-transform: uppercase; padding: 10px; border: 3px solid var(--encre); border-radius: 10px; background: var(--papier-2); color: var(--encre); cursor: pointer; }
@@ -84,8 +88,8 @@ input:focus { box-shadow: 0 0 0 3px var(--or); }
 .fiche { display: grid; grid-template-columns: 260px 1fr; gap: 24px; }
 .portrait { text-align: center; position: relative; }
 .portrait .brute { width: 250px; height: 310px; }
-.portrait .animaux { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; margin-top: -30px; }
-.portrait .animaux .animal { width: calc(80px * var(--taille)); height: calc(60px * var(--taille)); }
+.portrait .animaux { display: flex; justify-content: center; gap: 2px; flex-wrap: wrap; margin-top: -10px; }
+.portrait .animaux .animal { width: calc(110px * var(--taille)); height: calc(84px * var(--taille)); }
 .nom-brute { font: 900 2.2rem var(--titre); margin: 0; color: var(--rouge); text-shadow: 2px 2px 0 var(--encre); word-break: break-word; }
 .niveau { display: inline-block; font: 900 .9rem var(--titre); background: var(--encre); color: var(--or); padding: 4px 10px; border-radius: 8px; margin: 6px 0; }
 .jauge { height: 18px; border: 3px solid var(--encre); border-radius: 10px; background: #fffaf0; overflow: hidden; }
@@ -93,11 +97,21 @@ input:focus { box-shadow: 0 0 0 3px var(--or); }
 .jauge.pv > i { background: linear-gradient(#e0574a, var(--rouge)); }
 .caracs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 18px; margin: 14px 0; }
 .carac { display: grid; grid-template-columns: 1fr auto; gap: 2px 8px; align-items: center; font-weight: 700; }
-.carac .jauge { grid-column: 1 / -1; height: 12px; border-width: 2px; }
-.carac .jauge > i { background: linear-gradient(#5aa7d6, var(--bleu)); }
+.carres { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 2px; }
+.carres i { width: 11px; height: 13px; border: 2px solid var(--encre); background: #fffbe6; }
+.carres i.plein { background: linear-gradient(#ffe066, #e0a526); }
 .liste-objets { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 14px; padding: 0; list-style: none; }
 .objet { display: flex; align-items: center; gap: 6px; background: #fffaf0; border: 2px solid var(--encre); border-radius: 10px; padding: 4px 10px 4px 4px; font-weight: 700; font-size: .9rem; }
 .objet .icone { width: 26px; height: 40px; }
+.ratelier {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 12px 14px; margin: 6px 0 14px; list-style: none; min-height: 84px;
+  border: 3px solid var(--encre); border-radius: 12px;
+  background: repeating-linear-gradient(#a8703d 0 26px, #8e5a2e 26px 28px), #a8703d;
+  box-shadow: inset 0 4px 0 rgba(255,255,255,.15), inset 0 -6px 0 rgba(0,0,0,.18);
+}
+.ratelier li { display: flex; flex-direction: column; align-items: center; color: #fff3cf; font: 700 .72rem var(--texte); text-shadow: 1px 1px 0 #3b2a1a; }
+.ratelier .icone { width: 44px; height: 70px; filter: drop-shadow(2px 2px 0 rgba(0,0,0,.35)); }
+.ratelier .vide { color: #fff3cf; }
 .objet .animal { width: 42px; height: 32px; }
 .competence { padding: 5px 10px; cursor: help; }
 .vide { color: var(--encre-douce); font-style: italic; }
@@ -138,20 +152,39 @@ input:focus { box-shadow: 0 0 0 3px var(--or); }
 .combat { max-width: 980px; margin: 0 auto; }
 .arene {
   position: relative; height: 420px; overflow: hidden; border: 4px solid var(--encre); border-radius: 18px;
+  background: linear-gradient(#d9a55a, #c28a44); box-shadow: 0 6px 0 var(--encre);
+}
+.arene::before { /* le mur : blocs de pierre et bas-reliefs */
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 58%;
   background:
-    linear-gradient(transparent 62%, #b98b53 62%, #a27443 100%),
-    repeating-linear-gradient(90deg, #cfae7c 0 60px, #c4a26f 60px 62px),
-    linear-gradient(#e9cf9c, #d9b77f);
-  box-shadow: 0 6px 0 var(--encre);
+    radial-gradient(circle at 50% 46%, #b67c3c 0 18px, #8e5a2e 19px 23px, transparent 24px) 0 0 / 200px 100%,
+    radial-gradient(ellipse at 50% 46%, #e9c07a 0 42px, #8e5a2e 43px 47px, transparent 48px) 0 0 / 200px 100%,
+    repeating-linear-gradient(90deg, rgba(90, 58, 30, .35) 0 3px, transparent 3px 100px),
+    repeating-linear-gradient(0deg, rgba(90, 58, 30, .3) 0 3px, transparent 3px 56px),
+    linear-gradient(#e7bb72, #cf9a52);
+  border-bottom: 8px solid #8e5a2e;
 }
-.arene::before { /* les gradins */
-  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 110px;
-  background: radial-gradient(circle at 10px 16px, #8a5a32 7px, transparent 8px) 0 0 / 22px 26px,
-              linear-gradient(#6b4428, #8b5e3c); opacity: .75;
+.sol { /* les dalles, vues en perspective */
+  position: absolute; left: -30%; right: -30%; bottom: 0; height: 46%; transform-origin: 50% 0;
+  transform: perspective(300px) rotateX(38deg);
+  background:
+    radial-gradient(ellipse at 50% 55%, transparent 0 34%, rgba(255, 244, 200, .55) 34.5% 36%, transparent 36.5%),
+    repeating-linear-gradient(90deg, #a4692f 0 3px, transparent 3px 90px),
+    repeating-linear-gradient(0deg, #a4692f 0 3px, transparent 3px 46px),
+    radial-gradient(ellipse at 50% 40%, #f6d488, #e0ad58 60%, #c98f40);
 }
-.arene::after { content: ""; position: absolute; left: 0; right: 0; bottom: 36%; height: 6px; background: var(--encre); opacity: .5; }
 .hud { position: absolute; top: 10px; left: 10px; right: 10px; display: flex; justify-content: space-between; gap: 12px; z-index: 5; }
-.hud-brute { width: min(46%, 330px); background: #fbf3e0; border: 3px solid var(--encre); border-radius: 12px; padding: 6px 10px; }
+.hud-brute { width: min(46%, 340px); display: grid; grid-template-columns: 52px 1fr; gap: 0 8px; align-items: center;
+  background: rgba(59, 42, 26, .82); color: #fff3cf; border: 3px solid var(--encre); border-radius: 12px; padding: 5px 8px; }
+.hud-brute.droite { grid-template-columns: 1fr 52px; }
+.hud-brute .tete { grid-row: 1 / 4; width: 52px; height: 52px; background: #f6e3ae; border: 2px solid #fff3cf; border-radius: 8px; overflow: hidden; }
+.hud-brute.droite .tete { grid-column: 2; grid-row: 1 / 4; }
+.hud-brute.droite .tete svg { transform: scaleX(-1); }
+.hud-brute .tete svg { width: 100%; height: 100%; display: block; }
+.hud-brute.droite > :not(.tete) { grid-column: 1; }
+.hud-brute b { text-transform: uppercase; letter-spacing: .03em; }
+.hud-brute .jauge { border-color: #1f150c; }
+.hud-brute .jauge.pv > i { background: linear-gradient(#ffe066, #e0a526); }
 .hud-brute.droite { text-align: right; }
 .hud-brute b { font: 900 1rem var(--titre); display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hud-brute .jauge { height: 14px; margin-top: 3px; }

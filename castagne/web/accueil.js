@@ -6,6 +6,15 @@
   const maitre = parametres.get('maitre');
   let regles, apparence;
 
+  // Les onglets marchent tout de suite, même avant la réponse du serveur.
+  $$('.onglets button').forEach((b) => {
+    b.onclick = () => {
+      $$('.onglets button').forEach((x) => x.classList.toggle('actif', x === b));
+      $('#formCreer').hidden = b.dataset.onglet !== 'creer';
+      $('#formConnexion').hidden = b.dataset.onglet !== 'connexion';
+    };
+  });
+
   // Déjà connecté ? Direction le jeu.
   try { await api('/api/moi'); location.replace('/jeu'); return; } catch { /* pas connecté */ }
 
@@ -20,14 +29,6 @@
     $('#maitreBandeau').hidden = false;
     $('#maitreBandeau').textContent = `🎓 Tu rejoins l'école de ${maitre} : ta brute sera son élève.`;
   }
-
-  $$('.onglets button').forEach((b) => {
-    b.onclick = () => {
-      $$('.onglets button').forEach((x) => x.classList.toggle('actif', x === b));
-      $('#formCreer').hidden = b.dataset.onglet !== 'creer';
-      $('#formConnexion').hidden = b.dataset.onglet !== 'connexion';
-    };
-  });
 
   $('#formCreer').onsubmit = async (e) => {
     e.preventDefault();

@@ -86,7 +86,7 @@ simulés : une compétence ou une arme vaut à peu près un gain de caractérist
 | `jeu.py` | la partie : création, arène, expérience, choix de niveau, élèves, tournois |
 | `base.py` | la base SQLite et les sessions |
 | `serveur.py` | le serveur HTTP et l'API |
-| `web/commun.js` | les dessins SVG des brutes (7 coiffures, 6 teints, barbes, yeux, carrure), des animaux et des armes |
+| `web/commun.js` | les dessins SVG, en style « chibi » (grosse tête, gros contours, ombrages), des brutes (7 coiffures, 6 teints, 4 regards, barbes, carrure), des animaux et des armes |
 | `web/combat.js` | la relecture animée des combats |
 | `web/jeu.js`, `web/accueil.js` | les écrans du jeu (JavaScript sans bibliothèque) |
 

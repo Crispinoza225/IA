@@ -14,7 +14,7 @@ class Replay {
     this.combattants = new Map();
     conteneur.innerHTML = `
       <div class="combat">
-        <div class="arene"><div class="hud"></div></div>
+        <div class="arene"><div class="sol"></div><div class="hud"></div></div>
         <div class="controles">
           <button class="btn petit-btn actif" data-vitesse="1">▶ Normal</button>
           <button class="btn petit-btn" data-vitesse="2">⏩ Rapide</button>
@@ -120,7 +120,7 @@ class Replay {
       if (!info.animal) {
         c.hud = document.createElement('div');
         c.hud.className = `hud-brute ${info.equipe === 0 ? 'gauche' : 'droite'}`;
-        c.hud.innerHTML = `<b></b><div class="jauge pv"><i style="width:100%"></i></div><span class="pv-texte"></span>`;
+        c.hud.innerHTML = `<div class="tete">${teteBrute(info.apparence || {})}</div><b></b><div class="jauge pv"><i style="width:100%"></i></div><span class="pv-texte"></span>`;
         $('b', c.hud).textContent = `${info.nom}${brute ? ` · niv. ${brute.niveau}` : ''}`;
         hud.append(c.hud);
       }

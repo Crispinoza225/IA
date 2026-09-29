@@ -229,7 +229,7 @@ class TestServeur(unittest.TestCase):
         visiteur = Client(self.port)
         statut, page = visiteur.appel("GET", "/")
         self.assertEqual(statut, 200)
-        self.assertIn("CASTAGNE", page)
+        self.assertIn("<title>Castagne</title>", page)
         self.assertEqual(visiteur.appel("GET", "/api/moi")[0], 401)
 
         joueur = Client(self.port)

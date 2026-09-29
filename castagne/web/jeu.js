@@ -31,11 +31,11 @@ function majNav(actif) {
 /* --- Fiche d'une brute ----------------------------------------------------------------------------------------------- */
 function jaugeCarac(cle, valeur) {
   return `<div class="carac"><span>${REGLES.caracs[cle]}</span><span>${valeur}</span>
-    <div class="jauge"><i style="width:${Math.min(100, (valeur / 30) * 100)}%"></i></div></div>`;
+    <div class="carres">${Array.from({ length: Math.max(10, Math.min(30, valeur)) }, (_, i) => `<i class="${i < valeur ? 'plein' : ''}"></i>`).join('')}</div></div>`;
 }
 
 function ficheHTML(b) {
-  const armes = b.armes.length ? b.armes.map((a) => `<li class="objet">${iconeArme(a)}${echapper(REGLES.armes[a].nom)}</li>`).join('')
+  const armes = b.armes.length ? b.armes.map((a) => `<li>${iconeArme(a)}${echapper(REGLES.armes[a].nom)}</li>`).join('')
     : '<li class="vide">Aucune : elle se bat à mains nues.</li>';
   const competences = b.competences.length ? b.competences.map((c) => `<li class="objet competence" title="${echapper(REGLES.competences[c].texte)}">${echapper(REGLES.competences[c].nom)}</li>`).join('')
     : '<li class="vide">Aucune pour l\'instant.</li>';
@@ -57,7 +57,7 @@ function ficheHTML(b) {
       <div class="jauge pv"><i style="width:100%"></i></div>
       <div class="caracs">${Object.keys(REGLES.caracs).map((c) => jaugeCarac(c, b.caracs[c])).join('')}</div>
       <div class="bilan"><span class="v">${b.victoires} victoires</span><span class="d">${b.defaites} défaites</span></div>
-      <h3 style="margin-top:16px">Armes</h3><ul class="liste-objets">${armes}</ul>
+      <h3 style="margin-top:16px">Armes</h3><ul class="ratelier">${armes}</ul>
       <h3>Compétences</h3><ul class="liste-objets">${competences}</ul>
       <h3>Animaux</h3><ul class="liste-objets">${animaux}</ul>
     </div>

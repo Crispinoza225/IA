@@ -27,7 +27,7 @@ const BAS = ['#4a3526', '#2c3e50', '#5d6d7e', '#6b4f2a', '#1b4332', '#7b2d26', '
 
 function assombrir(hex, facteur = 0.8) {
   const n = parseInt(hex.slice(1), 16);
-  const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.round(v * facteur));
+  const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.min(255, Math.round(v * facteur))); // > 1 éclaircit
   return `#${c.map((v) => v.toString(16).padStart(2, '0')).join('')}`;
 }
 
@@ -64,122 +64,168 @@ function icone(contenu, vue = '-30 -75 60 105', classe = 'icone') {
 }
 const iconeArme = (cle) => icone(`<g transform="rotate(35)">${ARMES_SVG[cle] || ''}</g>`);
 
-/* --- Brute : de profil, tournée vers la droite ----------------------------------------------------------------------- */
+/* --- Brute : style « chibi » de trois quarts, tournée vers la droite ------------------------------------------------ */
+// Grosse tête, petit corps, gros contours et ombrages en aplats. Tout est dessiné ici, variante par variante.
+const CHAUSSURES = ['#d63a2a', '#f4efe2', '#6b4226', '#2b2b2b'];
+const T = (e = 3) => `stroke="${ENCRE}" stroke-width="${e}" stroke-linejoin="round" stroke-linecap="round"`;
+
 function coiffure(style, couleur, derriere) {
-  const ombre = assombrir(couleur, 0.85);
-  const t = `stroke="${ENCRE}" stroke-width="2.2" stroke-linejoin="round"`;
+  const ombre = assombrir(couleur, 0.78), reflet = assombrir(couleur, 1.25);
   if (derriere) {
-    if (style === 3) return `<path d="M42 36 C38 56 40 70 48 76 L58 70 L56 40Z" fill="${ombre}" ${t}/>`;
-    if (style === 4) return `<path d="M44 34 C30 38 28 58 34 66 C38 56 40 48 46 44Z" fill="${ombre}" ${t}/>`;
-    if (style === 5) return `<circle cx="56" cy="38" r="24" fill="${couleur}" ${t}/>`;
-    return '';
+    switch (style) {
+      case 3: return `<path d="M34 30 C22 52 24 82 36 96 L50 90 C44 76 42 58 46 40Z" fill="${ombre}" ${T()}/>`;
+      case 4: return `<path d="M36 28 C16 22 6 38 10 56 C14 48 20 44 26 46 C18 58 22 70 30 72 C30 60 34 50 42 42Z" fill="${couleur}" ${T()}/>
+        <path d="M18 50 C16 56 20 64 26 68" fill="none" stroke="${ombre}" stroke-width="3" stroke-linecap="round"/>`;
+      case 5: return `<path d="M58 -2 C72 -8 90 0 94 14 C104 20 104 38 96 46 C98 58 88 64 80 60 L40 62 C28 66 18 56 22 44 C12 34 18 16 30 12 C36 0 48 -4 58 -2Z" fill="${couleur}" ${T()}/>`;
+      default: return '';
+    }
   }
   switch (style) {
-    case 1: return `<path d="M41 40 C40 24 54 18 66 22 C72 24 76 30 75 36 C68 30 58 30 52 34 C48 36 46 42 45 46Z" fill="${couleur}" ${t}/>`;
-    case 2: return `<path d="M46 30 L44 14 L52 24 L54 8 L60 22 L66 10 L66 25 L74 18 L70 30 C62 26 52 26 46 30Z" fill="${couleur}" ${t}/>`;
-    case 3: case 4: return `<path d="M40 44 C38 24 54 16 67 22 C73 25 76 31 75 36 C66 30 56 30 50 36 C46 40 44 46 44 52Z" fill="${couleur}" ${t}/>`;
-    case 5: return `<path d="M44 30 C50 24 62 24 70 28" fill="none" ${t}/>`;
-    case 6: return `<circle cx="48" cy="22" r="8" fill="${couleur}" ${t}/><path d="M41 42 C40 25 54 19 66 23 C72 25 76 31 75 36 C68 31 58 31 52 35 C48 38 46 43 45 47Z" fill="${couleur}" ${t}/>`;
+    case 0: return `<ellipse cx="66" cy="20" rx="9" ry="5" fill="#fff" opacity=".35" transform="rotate(-20 66 20)"/>`;
+    case 1: return `<path d="M31 44 C28 22 44 8 62 9 C78 10 90 20 88 34 C82 30 78 30 74 33 L72 26 L66 32 L60 25 L54 32 L46 28 L42 38 C38 38 35 41 35 46Z" fill="${couleur}" ${T()}/>
+      <path d="M40 18 C48 12 60 12 68 14" fill="none" stroke="${reflet}" stroke-width="3" stroke-linecap="round"/>`;
+    case 2: return `<path d="M32 46 L20 30 L34 30 L26 12 L42 20 L44 2 L56 16 L64 -2 L70 16 L84 4 L82 22 L96 18 L88 32 C82 28 76 29 72 32 L68 26 L62 32 L56 25 L50 32 L44 28 L40 38 C37 39 34 42 35 46Z" fill="${couleur}" ${T()}/>
+      <path d="M46 16 L50 22 M62 10 L63 18 M76 14 L73 21" stroke="${reflet}" stroke-width="2.5" stroke-linecap="round"/>`;
+    case 3: case 4: return `<path d="M30 50 C24 22 42 6 62 8 C80 9 92 22 88 36 C80 28 70 26 62 28 C54 30 48 34 44 40 C40 44 38 50 38 58 C34 58 31 55 30 50Z" fill="${couleur}" ${T()}/>
+      <path d="M44 16 C52 11 62 11 70 13" fill="none" stroke="${reflet}" stroke-width="3" stroke-linecap="round"/>`;
+    case 5: return `<path d="M44 26 C52 22 60 26 66 22 C72 26 80 24 86 30" fill="none" stroke="${ombre}" stroke-width="4" stroke-linecap="round"/>`;
+    case 6: return `<path d="M48 16 L44 -4 L56 8 L58 -10 L66 6 L74 -8 L74 10 L86 2 L80 20 C72 14 58 12 48 16Z" fill="${couleur}" ${T()}/>
+      <path d="M56 6 L59 12 M70 2 L70 10" stroke="${reflet}" stroke-width="2.5" stroke-linecap="round"/>`;
     default: return '';
   }
 }
 
-function yeux(style) {
+function visage(style, genre) {
+  const cils = genre === 'f' ? `<path d="M59 36 L56 33 M82 36 L85 33" stroke="${ENCRE}" stroke-width="2.2" stroke-linecap="round"/>` : '';
+  const oeil = (x, rx, ry, px) => `<ellipse cx="${x}" cy="41" rx="${rx}" ry="${ry}" fill="#fff" ${T(2.4)}/>
+    <circle cx="${x + px}" cy="42" r="${ry * 0.52}" fill="${ENCRE}"/><circle cx="${x + px + 1}" cy="40" r="1.3" fill="#fff"/>`;
+  let yeux;
   switch (style) {
-    case 1: return `<path d="M62 40 L71 41" stroke="${ENCRE}" stroke-width="3" stroke-linecap="round"/><path d="M60 34 L72 37" stroke="${ENCRE}" stroke-width="2.6" stroke-linecap="round"/>`;
-    case 2: return `<circle cx="67" cy="40" r="4.6" fill="#fff" stroke="${ENCRE}" stroke-width="1.6"/><circle cx="68.5" cy="40.5" r="2.2" fill="${ENCRE}"/><path d="M62 33 L72 34" stroke="${ENCRE}" stroke-width="2.4" stroke-linecap="round"/>`;
-    case 3: return `<path d="M63 41 Q67 38 71 41" fill="none" stroke="${ENCRE}" stroke-width="2.4" stroke-linecap="round"/><path d="M61 35 L72 34" stroke="${ENCRE}" stroke-width="2.4" stroke-linecap="round"/>`;
-    default: return `<circle cx="67" cy="40" r="2.6" fill="${ENCRE}"/><path d="M61 34 L72 36" stroke="${ENCRE}" stroke-width="2.6" stroke-linecap="round"/>`;
+    case 1: // paupières lourdes, l'air blasé
+      yeux = `${oeil(64, 5.5, 6, 1.5)}${oeil(79, 4.5, 5.5, 1.2)}<path d="M58 39 L70 39 M74 39 L84 39" stroke="${ENCRE}" stroke-width="3.2" stroke-linecap="round"/>`;
+      break;
+    case 2: // grands yeux fous
+      yeux = `${oeil(64, 7, 8, 0)}${oeil(80, 5.5, 7, 0)}<path d="M57 29 L70 31 M75 30 L85 27" stroke="${ENCRE}" stroke-width="3.2" stroke-linecap="round"/>`;
+      break;
+    case 3: // plissés
+      yeux = `<path d="M59 42 Q64 38 69 42 M75 42 Q79 38 84 42" fill="none" stroke="${ENCRE}" stroke-width="3" stroke-linecap="round"/>
+        <path d="M57 33 L70 37 M74 36 L85 32" stroke="${ENCRE}" stroke-width="3.4" stroke-linecap="round"/>`;
+      break;
+    default: // colère
+      yeux = `${oeil(64, 5.5, 6.5, 1.8)}${oeil(79, 4.5, 5.8, 1.4)}<path d="M57 31 L71 37 M74 36 L86 30" stroke="${ENCRE}" stroke-width="3.6" stroke-linecap="round"/>`;
   }
+  const bouches = [
+    `<path d="M66 56 Q74 61 83 54 L82 58 Q74 65 67 60Z" fill="#fff" ${T(2.2)}/><path d="M72 58 L72 61 M77 57 L77 60" stroke="${ENCRE}" stroke-width="1.3"/>`,
+    `<path d="M67 58 Q75 55 83 57" fill="none" ${T(2.6)}/>`,
+    `<path d="M66 54 Q75 52 84 53 Q80 64 70 62Z" fill="#7a2a1f" ${T(2.2)}/><path d="M68 55 L82 54" stroke="#fff" stroke-width="2.4"/>`,
+    `<path d="M67 57 Q72 54 76 57 Q80 60 84 56" fill="none" ${T(2.6)}/>`,
+  ];
+  return `${yeux}${cils}<path d="M84 45 Q91 48 86 52" fill="none" ${T(2.4)}/>${bouches[style] || bouches[0]}`;
 }
 
 function barbe(style, couleur) {
-  const t = `stroke="${ENCRE}" stroke-width="2" stroke-linejoin="round"`;
+  const t = T(2.4);
   switch (style) {
-    case 1: return `<path d="M60 49 Q68 46 75 49" fill="none" stroke="${couleur}" stroke-width="3.5" stroke-linecap="round"/>`;
-    case 2: return `<path d="M50 46 C52 60 62 66 72 58 C74 54 74 52 74 50 C68 54 60 54 56 48Z" fill="${couleur}" ${t}/>`;
-    case 3: return `<path d="M52 48 C54 70 64 78 70 72 C74 66 74 56 74 50 C68 55 60 54 56 48Z" fill="${couleur}" ${t}/>`;
+    case 1: return `<path d="M64 53 Q74 47 86 51 Q80 54 75 52 Q70 55 64 53Z" fill="${couleur}" ${t}/>`;
+    case 2: return `<path d="M68 61 Q75 66 82 60 L80 72 Q75 76 71 70Z" fill="${couleur}" ${t}/>`;
+    case 3: return `<path d="M36 50 C38 68 50 78 64 76 C76 76 86 68 88 56 C82 62 76 64 70 62 C62 62 58 58 54 54 C48 58 42 56 36 50Z" fill="${couleur}" ${t}/>`;
     default: return '';
   }
 }
 
 /* options : arme (clé), bouclier (booléen), carrure (0,85 à 1,3) */
 function dessinerBrute(a, options = {}) {
-  const peau = PEAUX[a.peau] || PEAUX[1], ombrePeau = assombrir(peau, 0.82);
+  const peau = PEAUX[a.peau] || PEAUX[1], ombrePeau = assombrir(peau, 0.8), refletPeau = assombrir(peau, 1.08);
   const cheveux = CHEVEUX[a.cheveux] || CHEVEUX[0];
   const haut = HAUTS[a.haut] || HAUTS[0], bas = BAS[a.bas] || BAS[0];
-  const k = Math.max(0.85, Math.min(1.3, options.carrure || 1)) * (a.genre === 'f' ? 0.92 : 1);
-  const epaule = 17 * k, taille = 12 * k;
-  const t = `stroke="${ENCRE}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
-  const jambe = (x1, x2, couleur) => `<path d="M${x1} 100 L${x2} 146" stroke="${ENCRE}" stroke-width="${13 * k}" stroke-linecap="round"/><path d="M${x1} 100 L${x2} 146" stroke="${couleur}" stroke-width="${13 * k - 4.8}" stroke-linecap="round"/><ellipse cx="${x2 + 4}" cy="149" rx="9" ry="5" fill="#3b2a1a"/>`;
-  const bras = (x1, y1, x2, y2, couleur, epaisseur) => `<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${ENCRE}" stroke-width="${epaisseur + 4.8}" stroke-linecap="round"/><path d="M${x1} ${y1} L${x2} ${y2}" stroke="${couleur}" stroke-width="${epaisseur}" stroke-linecap="round"/>`;
+  const chaussure = CHAUSSURES[((a.haut || 0) + (a.bas || 0)) % CHAUSSURES.length];
+  const k = Math.max(0.85, Math.min(1.3, options.carrure || 1)) * (a.genre === 'f' ? 0.9 : 1);
+  const X = (x) => 60 + (x - 60) * k; // élargit le buste et les épaules selon la carrure
+  const membre = (d, couleur, epaisseur) => `<path d="${d}" fill="none" stroke="${ENCRE}" stroke-width="${epaisseur + 5}" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="${couleur}" stroke-width="${epaisseur}" stroke-linecap="round" stroke-linejoin="round"/>`;
+  const basket = (x, couleur) => `<path d="M${x - 10} 140 C${x - 11} 130 ${x - 4} 126 ${x + 2} 127 C${x + 8} 128 ${x + 13} 132 ${x + 14} 138 C${x + 14} 142 ${x - 10} 143 ${x - 10} 140Z" fill="${couleur}" ${T(2.8)}/>
+    <path d="M${x - 10} 138 L${x + 14} 137" stroke="#fff" stroke-width="2.4" opacity=".8"/>`;
   const arme = options.arme && ARMES_SVG[options.arme]
-    ? `<g transform="translate(84 90) rotate(${ARMES_SVG[options.arme] && options.arme === 'shuriken' ? 0 : 55})">${ARMES_SVG[options.arme]}</g>` : '';
+    ? `<g transform="translate(92 96) scale(1.25) rotate(${options.arme === 'shuriken' ? 0 : 50})">${ARMES_SVG[options.arme]}</g>` : '';
   const bouclier = options.bouclier
-    ? `<g transform="translate(36 86)"><circle r="15" fill="#a0692f" ${t}/><circle r="10" fill="none" stroke="${ENCRE}" stroke-width="1.6"/><circle r="3.5" fill="#d9a441" ${t}/></g>` : '';
-  return `<svg class="brute" viewBox="-15 -25 150 185" aria-hidden="true">
-    <ellipse cx="60" cy="152" rx="32" ry="5" fill="rgba(0,0,0,.18)"/>
-    ${jambe(52, 46, assombrir(bas, 0.8))}
-    ${bras(50, 68, 42, 94, ombrePeau, 8 * k)}
-    ${bouclier}
+    ? `<g transform="translate(${X(34)} 94)"><circle r="17" fill="#a0692f" ${T()}/><path d="M-12 -8 A14 14 0 0 1 8 -13" fill="none" stroke="#c98b4f" stroke-width="3" stroke-linecap="round"/>
+       <circle r="11" fill="none" stroke="${ENCRE}" stroke-width="1.8"/><circle r="4.5" fill="#d9a441" ${T(2.4)}/></g>` : '';
+  return `<svg class="brute" viewBox="-22 -20 184 172" aria-hidden="true">
+    <ellipse cx="60" cy="142" rx="34" ry="6" fill="rgba(0,0,0,.2)"/>
     ${coiffure(a.coiffure, cheveux, true)}
-    <path d="M${58 - epaule} 64 Q58 56 ${58 + epaule} 64 L${58 + taille} 104 L${58 - taille} 104Z" fill="${haut}" ${t}/>
-    <rect x="${58 - taille - 1}" y="96" width="${2 * taille + 2}" height="7" rx="2" fill="#3b2a1a"/>
-    <rect x="${56}" y="97" width="7" height="5" rx="1" fill="#d9a441"/>
-    ${jambe(64, 70, bas)}
-    <path d="M52 56 L52 64 L64 64 L64 56Z" fill="${ombrePeau}"/>
-    <circle cx="58" cy="40" r="18" fill="${peau}" ${t}/>
-    <circle cx="52" cy="43" r="4.5" fill="${ombrePeau}" ${t}/>
-    <path d="M74 42 L80 47 L74 49" fill="${peau}" ${t}/>
-    ${yeux(a.yeux)}
-    <path d="M65 54 Q70 55 74 52" fill="none" stroke="${ENCRE}" stroke-width="2.2" stroke-linecap="round"/>
+    ${membre('M53 104 L50 128', ombrePeau, 11 * k)}${basket(49, assombrir(chaussure, 0.85))}
+    ${membre(`M${X(46)} 74 L${X(38)} 90 L${X(36)} 98`, ombrePeau, 10 * k)}
+    <circle cx="${X(35)}" cy="100" r="7.5" fill="${ombrePeau}" ${T(2.8)}/>
+    ${bouclier}
+    ${membre('M67 104 L70 128', peau, 11 * k)}${basket(71, chaussure)}
+    <path d="M${X(41)} 92 L${X(79)} 92 L${X(81)} 110 L66 112 L60 104 L54 112 L${X(39)} 110Z" fill="${bas}" ${T()}/>
+    <path d="M${X(41)} 94 L${X(49)} 94 L${X(47)} 110 L${X(39)} 110Z" fill="${assombrir(bas, 0.78)}"/>
+    <path d="M${X(40)} 68 Q60 60 ${X(80)} 68 L${X(79)} 94 Q60 98 ${X(41)} 94Z" fill="${haut}" ${T()}/>
+    <path d="M${X(42)} 70 Q${X(46)} 82 ${X(43)} 93 L${X(50)} 95 Q${X(50)} 80 ${X(48)} 66Z" fill="${assombrir(haut, 0.78)}"/>
+    <path d="M${X(66)} 70 Q${X(72)} 74 ${X(74)} 84" fill="none" stroke="${assombrir(haut, 1.2)}" stroke-width="3" stroke-linecap="round"/>
+    <rect x="${X(40)}" y="89" width="${X(80) - X(40)}" height="7" rx="3" fill="#6b4226" ${T(2.4)}/>
+    <rect x="56" y="88.5" width="9" height="8" rx="2" fill="#d9a441" ${T(2)}/>
+    <path d="M52 58 L52 68 Q60 72 68 68 L68 58Z" fill="${ombrePeau}" ${T(2.4)}/>
+    <circle cx="60" cy="40" r="28" fill="${peau}" ${T(3.2)}/>
+    <path d="M36 26 C30 40 34 58 48 66 C40 56 38 42 42 30Z" fill="${ombrePeau}" opacity=".9"/>
+    <ellipse cx="72" cy="22" rx="8" ry="5" fill="${refletPeau}" opacity=".7" transform="rotate(-25 72 22)"/>
+    <ellipse cx="39" cy="46" rx="6.5" ry="8" fill="${peau}" ${T(2.8)}/><path d="M38 43 Q41 46 38 50" fill="none" stroke="${ombrePeau}" stroke-width="2.4" stroke-linecap="round"/>
+    ${a.genre === 'f' ? `<ellipse cx="80" cy="52" rx="4.5" ry="3" fill="#e8746a" opacity=".45"/>` : ''}
+    ${visage(a.yeux, a.genre)}
     ${barbe(a.genre === 'f' ? 0 : a.barbe, cheveux)}
     ${coiffure(a.coiffure, cheveux, false)}
     ${arme}
-    ${bras(66, 68, 82, 88, peau, 8.5 * k)}
-    <circle cx="84" cy="90" r="6" fill="${peau}" ${t}/>
+    ${membre(`M${X(76)} 74 L${X(84)} 86 L92 94`, peau, 10.5 * k)}
+    <rect x="${X(82) - 5}" y="84" width="11" height="8" rx="2" fill="${haut}" ${T(2.2)} transform="rotate(40 ${X(82)} 88)"/>
+    <circle cx="92" cy="96" r="8.5" fill="${peau}" ${T(3)}/><path d="M88 94 Q91 91 95 93" fill="none" stroke="${ombrePeau}" stroke-width="2" stroke-linecap="round"/>
   </svg>`;
 }
 
 /* La carrure dépend de la force et de l'endurance. */
 const carrure = (caracs) => (caracs ? 0.85 + Math.min(0.45, ((caracs.force || 0) + (caracs.endurance || 0) - 10) * 0.02) : 1);
 
-/* --- Animaux : de profil, tournés vers la droite --------------------------------------------------------------------- */
+/* --- Animaux : même style que les brutes, tournés vers la droite ---------------------------------------------------- */
 const ANIMAUX_STYLE = {
-  chien: { corps: '#b07a45', ventre: '#e1b98a', taille: 0.62, oreille: 'tombante', queue: 'courte' },
-  loup: { corps: '#8a8f99', ventre: '#d6d8dc', taille: 0.8, oreille: 'pointue', queue: 'touffue' },
-  panthere: { corps: '#2d2a33', ventre: '#3c3844', taille: 0.85, oreille: 'ronde', queue: 'longue', yeux: '#f3c623' },
-  ours: { corps: '#6b4428', ventre: '#8b5e3c', taille: 1.1, oreille: 'ronde', queue: 'aucune' },
+  chien: { corps: '#c8874a', ventre: '#f1d3a8', taille: 0.62, oreille: 'tombante', queue: 'courte', tache: true },
+  loup: { corps: '#8d95a3', ventre: '#e3e6eb', taille: 0.8, oreille: 'pointue', queue: 'touffue' },
+  panthere: { corps: '#35303d', ventre: '#4a4455', taille: 0.85, oreille: 'ronde', queue: 'longue', yeux: '#f3c623' },
+  ours: { corps: '#7a4d2c', ventre: '#b07a4c', taille: 1.1, oreille: 'ronde', queue: 'aucune' },
 };
 
 function dessinerAnimal(cle) {
   const s = ANIMAUX_STYLE[cle] || ANIMAUX_STYLE.chien;
-  const t = `stroke="${ENCRE}" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"`;
-  const patte = (x, fonce) => `<path d="M${x} 58 L${x} 80" stroke="${ENCRE}" stroke-width="10" stroke-linecap="round"/><path d="M${x} 58 L${x} 80" stroke="${fonce ? assombrir(s.corps, 0.8) : s.corps}" stroke-width="5.5" stroke-linecap="round"/>`;
+  const ombre = assombrir(s.corps, 0.75), reflet = assombrir(s.corps, 1.2);
+  const patte = (x, arriere) => `<path d="M${x} 62 L${x} 80" stroke="${ENCRE}" stroke-width="14" stroke-linecap="round"/>
+    <path d="M${x} 62 L${x} 80" stroke="${arriere ? ombre : s.corps}" stroke-width="8.5" stroke-linecap="round"/>`;
   const oreilles = {
-    tombante: `<path d="M82 22 C76 26 76 38 80 40 C84 34 86 28 86 24Z" fill="${assombrir(s.corps, 0.75)}" ${t}/>`,
-    pointue: `<path d="M84 22 L86 6 L94 20Z" fill="${s.corps}" ${t}/>`,
-    ronde: `<circle cx="86" cy="20" r="6" fill="${s.corps}" ${t}/>`,
+    tombante: `<path d="M76 14 C68 16 66 32 72 36 C78 30 82 22 82 16Z" fill="${ombre}" ${T(2.8)}/>`,
+    pointue: `<path d="M78 16 L80 -2 L92 12Z" fill="${s.corps}" ${T(2.8)}/><path d="M81 6 L83 12 L87 11Z" fill="#e8a0a0"/>`,
+    ronde: `<circle cx="80" cy="12" r="8" fill="${s.corps}" ${T(2.8)}/><circle cx="80" cy="12" r="3.5" fill="${ombre}"/>`,
   }[s.oreille];
   const queue = {
-    courte: `<path d="M24 46 Q14 36 18 28" fill="none" stroke="${ENCRE}" stroke-width="7" stroke-linecap="round"/><path d="M24 46 Q14 36 18 28" fill="none" stroke="${s.corps}" stroke-width="3" stroke-linecap="round"/>`,
-    touffue: `<path d="M26 46 C10 44 6 58 2 64 C14 62 22 56 28 52Z" fill="${s.corps}" ${t}/>`,
-    longue: `<path d="M26 46 C8 50 6 70 16 74" fill="none" stroke="${ENCRE}" stroke-width="8" stroke-linecap="round"/><path d="M26 46 C8 50 6 70 16 74" fill="none" stroke="${s.corps}" stroke-width="3.6" stroke-linecap="round"/>`,
+    courte: `<path d="M24 46 Q12 36 16 24" fill="none" stroke="${ENCRE}" stroke-width="10" stroke-linecap="round"/><path d="M24 46 Q12 36 16 24" fill="none" stroke="${s.corps}" stroke-width="5" stroke-linecap="round"/>`,
+    touffue: `<path d="M26 44 C8 40 2 56 0 66 C14 64 24 56 30 50Z" fill="${s.corps}" ${T(2.8)}/><path d="M6 60 C12 58 18 54 22 50" fill="none" stroke="${reflet}" stroke-width="2.5" stroke-linecap="round"/>`,
+    longue: `<path d="M26 46 C6 50 6 74 18 76" fill="none" stroke="${ENCRE}" stroke-width="11" stroke-linecap="round"/><path d="M26 46 C6 50 6 74 18 76" fill="none" stroke="${s.corps}" stroke-width="5.5" stroke-linecap="round"/>`,
     aucune: '',
   }[s.queue];
-  const museau = cle === 'ours' ? `<ellipse cx="104" cy="36" rx="9" ry="7" fill="${s.ventre}" ${t}/>`
-    : `<path d="M96 28 L114 34 L112 42 L96 44Z" fill="${s.ventre}" ${t}/>`;
-  return `<svg class="animal" viewBox="0 0 120 90" style="--taille:${s.taille}" aria-hidden="true">
-    <ellipse cx="60" cy="84" rx="36" ry="4" fill="rgba(0,0,0,.18)"/>
-    ${queue}${patte(36, true)}${patte(70, true)}
-    <ellipse cx="54" cy="48" rx="34" ry="17" fill="${s.corps}" ${t}/>
-    <path d="M34 58 Q54 66 76 58" fill="none" stroke="${s.ventre}" stroke-width="4" stroke-linecap="round"/>
-    ${patte(44, false)}${patte(78, false)}
-    <circle cx="92" cy="32" r="14" fill="${s.corps}" ${t}/>
+  const museau = cle === 'ours'
+    ? `<ellipse cx="104" cy="34" rx="12" ry="9" fill="${s.ventre}" ${T(2.8)}/><ellipse cx="112" cy="30" rx="4" ry="3" fill="${ENCRE}"/>`
+    : `<path d="M94 24 Q112 24 116 32 Q116 40 106 42 L94 42Z" fill="${s.ventre}" ${T(2.8)}/><ellipse cx="114" cy="30" rx="3.5" ry="3" fill="${ENCRE}"/>
+       <path d="M100 40 Q106 44 111 40" fill="none" stroke="${ENCRE}" stroke-width="2" stroke-linecap="round"/>`;
+  return `<svg class="animal" viewBox="-4 -8 128 98" style="--taille:${s.taille}" aria-hidden="true">
+    <ellipse cx="58" cy="86" rx="40" ry="5" fill="rgba(0,0,0,.2)"/>
+    ${queue}${patte(34, true)}${patte(66, true)}
+    <ellipse cx="52" cy="50" rx="34" ry="21" fill="${s.corps}" ${T(3)}/>
+    <path d="M24 56 Q50 74 80 58 Q76 68 52 71 Q30 70 24 56Z" fill="${s.ventre}"/>
+    <path d="M34 36 Q50 30 66 34" fill="none" stroke="${reflet}" stroke-width="3" stroke-linecap="round"/>
+    ${s.tache ? `<ellipse cx="40" cy="46" rx="9" ry="7" fill="${ombre}"/>` : ''}
+    ${patte(42, false)}${patte(74, false)}
+    <circle cx="88" cy="30" r="21" fill="${s.corps}" ${T(3)}/>
+    <path d="M70 38 C72 48 82 52 92 50 C84 48 76 44 70 38Z" fill="${ombre}"/>
     ${oreilles}${museau}
-    <circle cx="${cle === 'ours' ? 111 : 115}" cy="${cle === 'ours' ? 33 : 34}" r="3" fill="${ENCRE}"/>
-    <circle cx="95" cy="28" r="2.8" fill="${s.yeux || ENCRE}" stroke="${ENCRE}" stroke-width="1"/>
-    <path d="M89 22 L99 25" stroke="${ENCRE}" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="94" cy="24" rx="5.5" ry="6.5" fill="${s.yeux || '#fff'}" ${T(2.2)}/>
+    <circle cx="96" cy="25" r="3" fill="${ENCRE}"/><circle cx="97" cy="23.5" r="1.1" fill="#fff"/>
+    <path d="M86 14 L100 18" stroke="${ENCRE}" stroke-width="3.2" stroke-linecap="round"/>
   </svg>`;
 }
 
@@ -193,4 +239,4 @@ function apparenceAleatoire(tailles, genre) {
 }
 
 /* La tête seule, pour les listes. */
-const teteBrute = (a) => dessinerBrute(a).replace('viewBox="-15 -25 150 185"', 'viewBox="28 8 62 62"');
+const teteBrute = (a) => dessinerBrute(a).replace('viewBox="-22 -20 184 172"', 'viewBox="22 -4 76 76"');
